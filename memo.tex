@@ -1,0 +1,526 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry} % reduce the margin
+\usepackage{expl3} % for variable length list
+
+% Disable indentation at the beginning of each paragraph
+\setlength{\parindent}{0pt}
+
+% user-defined commands for note entries
+\ExplSyntaxOn
+\NewDocumentCommand{\CommandEntry}{mm}
+{
+    \texttt{#1}
+    \begin{itemize}
+        \seq_set_split:Nnn \l_tmpa_seq { ; } { #2 }
+        \seq_map_inline:Nn \l_tmpa_seq { \item ##1 }
+    \end{itemize}
+    \vspace{1em}
+}
+\ExplSyntaxOff
+
+\begin{document}
+
+\section{Accessibility}
+
+    \CommandEntry{setterm -inversescreen on}
+    {
+        Set console terminal background to white and font to black
+    }
+
+    \CommandEntry{setterm -inversescreen off}
+    {
+        Revert the previous command.
+    }
+
+    \CommandEntry{setterm -background <color>}
+    {
+        Set console terminal background to \texttt{<color>};
+        \texttt{<color>} can be black, red, green, yellow, blue, magenta, cyan, and white.
+    }
+
+    \CommandEntry{setterm -foreground <color>}
+    {
+        Set console terminal font to \texttt{<color>};
+        \texttt{<color>} can be black, red, green, yellow, blue, magenta, cyan, and white.
+    }
+
+    \CommandEntry{setterm -reset}
+    {
+        Change the terminal appearance back to the default settings and clear the screen.
+    }
+
+    \CommandEntry{setterm -store}
+    {
+        Store the current appearance as the default settings.
+    }
+
+\section{Helpers}
+
+    \CommandEntry{man <topic>}
+    {
+        Retrieve help information about \texttt{<topic>} from the Linux manual.
+    }
+
+    \CommandEntry{man <section \#> <topic>}
+    {
+        Retrieve help information about \texttt{<topic>} in section \texttt{<section \#>} from the Linux manual.
+    }
+
+    \CommandEntry{info <topic>}
+    {
+        Retrieve help information about \texttt{<topic>} from info page.
+    }
+
+    \CommandEntry{help <topic>}
+    {
+        Retrieve help information about \texttt{<topic>}. \texttt{<topic>} should be a built-in command.
+    }
+
+\section{Navigating the File System}
+     
+    \CommandEntry{cd}
+    {
+        Come back to the home directory.
+    }
+
+    \CommandEntry{pwd}
+    {
+        Display the current working directory.
+    }
+
+    \CommandEntry{ls <filter>}
+    {
+        Filter the output to match the pattern specified by \texttt{<filter>}. Wildcards are applicable here.
+    }
+
+    \CommandEntry{ls -F}
+    {
+        Append a slash (\texttt{/}) to the directories for better distinguishability.
+    }
+
+    \CommandEntry{ls -R}
+    {
+        Traverse and print the listing of the current directory recursively.
+    }
+
+    \CommandEntry{ls -d <dir\_path>}
+    {
+        Display the info of \texttt{<dir\_path>} instead of peek into the \texttt{<dir\_path>}.
+    }
+
+    \CommandEntry{ls -l --time=atime}
+    {
+        Display the access time instead of modification time in the long listing.
+    }
+
+    \CommandEntry{ls -i}
+    {
+        Display \textit{inode} number.
+    }
+
+\section{Handling Files}
+    
+    \CommandEntry{touch -a <file>}
+    {
+        Change the access time of \texttt{<file>} to the current time.
+    }
+
+    \CommandEntry{touch <existing\_file>}
+    {
+        Change the modification time of \texttt{<file>} to the current time.
+    }
+
+    \CommandEntry{cp <src> <dst>}
+    {
+        Copy \texttt{<src>} to \texttt{<dst>}. Wildcards can be used on \texttt{<src>} to copy multiple files.
+    }
+
+    \CommandEntry{cp -i <src> <dst>}
+    {
+        Copy \texttt{<src>} to \texttt{<dst>}. Inform the user before overwriting.;
+        \textbf{Highly recommended usage.}
+    }
+
+    \CommandEntry{ln -s <src> <sym\_link>}
+    {
+        Create a symbolic link \texttt{<sym\_link>} pointing to \texttt{<src>}.;
+        \textbf{Do not copy symbolic links, which can easily result in confusion}.
+    }
+
+    \CommandEntry{ln <src> <hard\_link>}
+    {
+        Create a hard link \texttt{<hard\_link>} pointing to \texttt{<src>}.;
+        \textbf{Do not copy hard links, which can easily result in confusion}.;
+        \textbf{You cannot create hard links for the files residing on a different physical media.}
+    }
+
+    \CommandEntry{mv <src> <dst>}
+    {
+        Move \texttt{<src>} to \texttt{<dst>}.;
+        "Move" is a fancy way to say "rename" in the Linux world.;
+        \texttt{mv} can only change file names. It cannot change inode numbers or timestamps of files.
+    }
+
+    \CommandEntry{mv -i <src> <dst>}
+    {
+        Move \texttt{<src>} to \texttt{<dst>}. Inform the user before overwriting.;
+        \textbf{Highly recommended usage.}
+    }
+
+    \CommandEntry{rm -i <file>}
+    {
+        Inform users before removing \texttt{<file>}.;
+        \textbf{Highly recommended usage.}
+    }
+
+    \CommandEntry{rmdir <empty\_dir>}
+    {
+        Remove the empty directory \texttt{<empty\_dir>}.;
+        Fail when the specified directory is not empty.
+    }
+
+    \CommandEntry{tree <dir>}
+    {
+        Display the structure of the specified directory.;
+        \texttt{tree} utility may not installed by default.
+    }
+
+    \CommandEntry{find <dir> -iname <pattern>}
+    {
+        Find occurences of case insensitive \texttt{<pattern>} in the directory \texttt{<dir>}.;
+        \texttt{<pattern>} can be regex to match file names.
+    }
+
+\section{Peeking File Contents}
+
+    \CommandEntry{file <file>}
+    {
+        Check the type of the file.;
+        When the \texttt{<file>} is an executable binary file, \texttt{file} command can provide useful information such as target platform and required libraries.
+    }
+
+    \CommandEntry{cat -n <file>}
+    {
+        Display the full contents with line numbers listed at LHS.
+    }
+
+    \CommandEntry{cat -b <file>}
+    {
+        Display the full contents with line numbers listed only for non-empty lines.
+    }
+
+    \CommandEntry{cat -T <file>}
+    {
+        Replace Tabs with \texttt{\string^I}.
+    }
+
+    \CommandEntry{zcat <gz\_file>}
+    {
+        Display the contents of a text file contained in the gz archive.
+    }
+
+    \CommandEntry{more <file>}
+    {
+        Display the file content part by part.;
+        It's a pager utility, so it overcomes the drawback of \texttt{cat} command, which may quickly flush the whole screen.
+    }
+
+    \CommandEntry{less <file>}
+    {
+        A more powerful utility than \texttt{more}.;
+        \textit{Less is more}.
+    }
+
+    \CommandEntry{head -n <\#> <file>}
+    {
+        Display the first \texttt{<\#>} lines of the file.;
+        Shorthand form: \texttt{head -<\#> <file>}.;
+        By default, \texttt{head} display the first 10 lines.
+    }
+
+    \CommandEntry{tail -n <\#> <file>}
+    {
+        Display the last \texttt{<\#>} lines of the file.;
+        Shorthand form: \texttt{tail -<\#> <file>}.;
+        By default, \texttt{tail} display the first 10 lines.
+    }
+
+    \CommandEntry{tail -f <file>}
+    {
+        Display the last 10 lines of the file in real-time.
+    }
+
+\section{Monitor Processes}
+
+    \CommandEntry{ps -ef}
+    {
+        See all processes running on the system.;
+        Not real-time monitoring. It's just a snapshot.;
+        \texttt{-ef} are UNIX style parameters.
+    }
+
+    \CommandEntry{ps -l}
+    {
+        Display more information.
+    }
+
+    \CommandEntry{ps l}
+    {
+        Alternative to \texttt{ps -l}.;
+        Give more detailed information about status code.;
+        \texttt{l} is a BSD style parameter.
+    }
+
+    \CommandEntry{ps --forest}
+    {
+        Display the hierarchical structure of the processes.;
+        Shorthand form: \texttt{ps f}.;
+        \texttt{--forest} is a GNU style parameter.
+    }
+
+    \CommandEntry{top}
+    {
+        Monitor processes in real-time.;
+        An interactive utility. Press \texttt{f} to select the field used for sorting, \texttt{d} to change the polling interval, and \texttt{q} to quit.
+    }
+
+    \CommandEntry{sudo kill <PID>}
+    {
+        Send \texttt{TERM} signal to the process for possible termination.;
+        Must use PID instead of the name of a process.
+    }
+
+    \CommandEntry{sudo kill -s <SIGNAL> <PID>}
+    {
+        Send signal \texttt{<SIGNAL>} to the process.;
+        \texttt{<SIGNAL>} can be either the number or the name of the signal.;
+        For forcible termination, use \texttt{KILL} signal.
+    }
+
+    \CommandEntry{sudo killall <PNAME>}
+    {
+        Stop the processes by their names. Wildcards is applicable in \texttt{<PNAME>}.
+    }
+
+\section{Manage Secondary Storage Media}
+
+    \CommandEntry{mount}
+    {
+        List all mounting media.
+    }
+
+    \CommandEntry{mount -t <filesys\_type> <dev\_file> <mount\_dir>}
+    {
+        Mount the device specified by \texttt{<dev\_file>} to the directory \texttt{<mount\_dir>}.;
+        \texttt{<filesys\_type>} is the type of the file system residing on the device.
+    }
+
+    \CommandEntry{umount <mount\_dir | dev\_file>}
+    {
+        Unmount a mounting media by either the mounting directory or device file name.;
+        The name of the command is \texttt{umount}, not \texttt{unmount}.;
+        If the media is using by some processes, unmount will fail.
+    }
+
+    \CommandEntry{df}
+    {
+        Check the usage of disks.
+    }
+
+    \CommandEntry{df -h}
+    {
+        Show the disk space in human-readable form.
+    }
+
+    \CommandEntry{du <dir\_list>}
+    {
+        Show the disk usage for specific directories in a recursive manner.;
+        If \texttt{<dir>} is missing, current directory will be the default.;
+        \texttt{-s} output the size for each directory listed. (summary functionality);
+        \texttt{-c} will give a grand total result for all directories at the end of the output.;
+        \texttt{-h} will convert the space into human-readable form.
+    }
+
+\section{Manipulating Data Files}
+
+    \CommandEntry{sort <file>}
+    {
+        Sorting lines in dictionary order.;
+        Ascending order by default.
+    }
+
+    \CommandEntry{sort -r <file>}
+    {
+        Sort in descending order.
+    }
+
+    \CommandEntry{sort -n <file>}
+    {
+        Treat data as numeric data.
+    }
+
+    \CommandEntry{sort -M <file>}
+    {
+        Sort in month order.;
+        Months must be in three-character format, such as Jan, Feb and Mar.
+    }
+
+    \CommandEntry{sort -t <delimiter> -k <field\_1, field\_2, \dots> <file>}
+    {
+        \texttt{-t}: split each line with \texttt{<delimiter>}.;
+        \texttt{-k}: after spliting, treat \texttt{<field\_1, field\_2, \dots>} as a joint key.
+    }
+
+    \CommandEntry{grep -v <pattern> <file>}
+    {
+        Display the lines which do not have the matching occurences. 
+    }
+
+    \CommandEntry{grep -n <pattern> <file>}
+    {
+        Display line numbers.
+    }
+
+    \CommandEntry{grep -c <pattern> <file>}
+    {
+        Display the count of lines that match the pattern.
+    }
+
+    \CommandEntry{grep -e <pattern\_1> -e <pattern\_2> \dots\ -e <pattern\_n> <file>}
+    {
+        Specify multiple patterns to match.
+    }
+
+    \CommandEntry{gzip <file\_list>}
+    {
+        Compress files.;
+        Wildcards can be used for \texttt{<file\_list>}.
+    }
+
+\section{Networks}
+
+    \CommandEntry{ssh-keygen -t <key\_type> -b <key\_length>}
+    {
+        Generate ssh key pair.;
+        \texttt{<key\_type>} is usually \texttt{rsa}.;
+        \texttt{<key\_length>} is usaully 4096 (in bits).
+    }
+
+    \CommandEntry{ssh-keygen -l -f <keyfile>}
+    {
+        Get the SHA-256 fingerprint of the \texttt{<keyfile>}.;
+        Usually, this command is used to obtain the host pubkey fingerprint during the first connection.;
+        \texttt{sudo ssh-keygen -l -f /etc/ssh/<pubkey>}.
+    }
+
+    \CommandEntry{ssh-copy-id -i <pubkey> <user>@<host>}
+    {
+        Copy the public key to the SSH server.;
+        \texttt{<user>} is the user on the SSH server.;
+        \texttt{<host>} is the hostname or IP address of the SSH server.
+    }
+
+    \CommandEntry{ss -o state established [ dport | sport ] = :<port \#>}
+    {
+        Display the established socket whose [ remote | local ] port number is \texttt{<port \#>}.;
+        \texttt{dport} is the remote port. \texttt{sport} is the local port.;
+        Filters can be connected using \texttt{and}, \texttt{or}. For example, \texttt{ss -o state established '( dport = :<port \#1> or sport = :<port \#2> )'}
+    }
+
+    \CommandEntry{sudo ufw status verbose}
+    {
+        Show the current status of firewall in a verbose manner.
+    }
+
+    \CommandEntry{sudo ufw enable}
+    {
+        Enable the firewall.
+    }
+
+    \CommandEntry{sudo ufw disbale}
+    {
+        Disable the firewall.
+    }
+
+    \CommandEntry{sudo ufw allow <rule>}
+    {
+        Add allow rule.;
+        \texttt{<rule>} can be well
+    }
+
+\section{Power Source Management}
+
+    \CommandEntry{upower -e}
+    {
+        Enumerate all power source related devices.
+    }
+
+    \CommandEntry{upower -i <dev\_file>}
+    {
+        Get all information about \texttt{<dev\_file>}.;
+        The list of \texttt{<dev\_file>} can be obtained via \texttt{upower -e}.
+    }
+
+\section{Git}
+
+    \CommandEntry{git init}
+    {
+        Create an empty Git repository or reinitialize an existing one.
+    }
+
+    \CommandEntry{git config --local user.name "<username>"}
+    {
+        Set user name as \texttt{<username>} only for the current git repository.;
+        If \texttt{--global} is applied, instead of \texttt{--local}, the configuration will be applied globally.
+    }
+
+    \CommandEntry{git config --local user.email "<email>"}
+    {
+        Set user email as \texttt{<email>} only for the current git repository.;
+        If \texttt{--global} is applied, instead of \texttt{--local}, the configuration will be applied globally.
+    }
+
+    \CommandEntry{git branch <branch\_name>}
+    {
+        Create a new branch named \texttt{<branch\_name>}, providing that \texttt{<branch\_name>} does not exist.
+    }
+
+    \CommandEntry{git branch -a}
+    {
+        List all local branches and remote branches.
+    }
+
+    \CommandEntry{git branch -M <new\_name>}
+    {
+        Forcibly rename the current branch with the new name \texttt{<new\_name>}.
+    }
+
+    \CommandEntry{git checkout <branch\_name>}
+    {
+        Switch to the branch \texttt{<branch\_name>}.
+    }
+
+    \CommandEntry{git checkout -b <branch\_name>}
+    {
+        Create a new branch named \texttt{<branch\_name>} and switch to it immediately, providing that \texttt{<branch\_name>} does not exist.;
+        Shorthand for \texttt{git branch <branch\_name>} and \texttt{git checkout <branch\_name>}.
+    }
+
+    \CommandEntry{git remote -v}
+    {
+        Show remote repository's URL after its name.;
+        Shorthand for \texttt{git remote --verbose}.
+    }
+
+    \CommandEntry{git remote add <name> <url>}
+    {
+        Add a remote repository witn name as \texttt{<name>} at \texttt{<url>}.
+    }
+
+    \CommandEntry{git remote set-url <name> <new\_url>}
+    {
+        Change the URL of the remote repository \texttt{<name>} to \texttt{<new\_url>}.
+    }
+
+\end{document}
