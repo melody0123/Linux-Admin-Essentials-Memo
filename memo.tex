@@ -12,7 +12,19 @@
 {
     \texttt{#1}
     \begin{itemize}
-        \seq_set_split:Nnn \l_tmpa_seq { ; } { #2 }
+        \seq_set_split:Nnn \l_tmpa_seq { ; } { #2 } % set semicolon as list item separator
+        \seq_map_inline:Nn \l_tmpa_seq { \item ##1 }
+    \end{itemize}
+    \vspace{1em}
+}
+\ExplSyntaxOff
+
+\ExplSyntaxOn
+\NewDocumentCommand{\FileEntry}{mm}
+{
+    \texttt{#1}
+    \begin{itemize}
+        \seq_set_split:Nnn \l_tmpa_seq { ; } { #2 } % set semicolon as list item separator
         \seq_map_inline:Nn \l_tmpa_seq { \item ##1 }
     \end{itemize}
     \vspace{1em}
@@ -223,7 +235,9 @@
     \CommandEntry{more <file>}
     {
         Display the file content part by part.;
-        It's a pager utility, so it overcomes the drawback of \texttt{cat} command, which may quickly flush the whole screen.
+        It's a pager utility, so it overcomes the drawback of \texttt{cat} command, which may quickly flush the whole screen.;
+        If some commands produce huge amount of data, they can be piped to \texttt{more} to achieve page-wise reading.;
+        \textbf{Example:} \texttt{dmesg | more}
     }
 
     \CommandEntry{less <file>}
@@ -303,6 +317,30 @@
         Stop the processes by their names. Wildcards is applicable in \texttt{<PNAME>}.
     }
 
+\section{System Services Management}
+
+    \CommandEntry{sudo systemctl enable <service>}
+    {
+        Enable \texttt{<service>} to automatically run at the boot time.
+    }
+
+    \CommandEntry{sudo systemctl disbale <service>}
+    {
+        Disable \texttt{<service>} from starting at the boot time.;
+        Reverse operation of \texttt{sudo systemctl enable <service>}.
+    }
+
+    \CommandEntry{sudo systemctl start <service>}
+    {
+        Start a stopped service \texttt{<service>}.
+    }
+
+    \CommandEntry{sudo systemctl stop <service>}
+    {
+        Stop a running service \texttt{<service>}.;
+        Reverse operation of \texttt{sudo systemctl start <service>}.
+    }
+
 \section{Manage Secondary Storage Media}
 
     \CommandEntry{mount}
@@ -336,7 +374,7 @@
     \CommandEntry{du <dir\_list>}
     {
         Show the disk usage for specific directories in a recursive manner.;
-        If \texttt{<dir>} is missing, current directory will be the default.;
+        If \texttt{<dir\_list>} is missing, current directory will be the default.;
         \texttt{-s} output the size for each directory listed. (summary functionality);
         \texttt{-c} will give a grand total result for all directories at the end of the output.;
         \texttt{-h} will convert the space into human-readable form.
@@ -370,6 +408,11 @@
     {
         \texttt{-t}: split each line with \texttt{<delimiter>}.;
         \texttt{-k}: after spliting, treat \texttt{<field\_1, field\_2, \dots>} as a joint key.
+    }
+
+    \CommandEntry{cut -d <delimiter> -f <number> <file>}
+    {
+        Process \texttt{<file>} line by line. Split each line into fields with the \texttt{<delimiter>}. Only preserve the \texttt{<number>}-th (one-based) field to output.
     }
 
     \CommandEntry{grep -v <pattern> <file>}
@@ -431,7 +474,12 @@
 
     \CommandEntry{sudo ufw status verbose}
     {
-        Show the current status of firewall in a verbose manner.
+        Show current status of the firewall in a verbose manner.
+    }
+
+    \CommandEntry{sudo ufw status numbered}
+    {
+        Show firewall rules with a number assigned to each of them.
     }
 
     \CommandEntry{sudo ufw enable}
@@ -444,23 +492,42 @@
         Disable the firewall.
     }
 
-    \CommandEntry{sudo ufw allow <rule>}
+    \CommandEntry{sudo ufw reload}
     {
-        Add allow rule.;
-        \texttt{<rule>} can be well
+        Reload the firewall after modify its configuration files.
+    }
+
+    \CommandEntry{sudo ufw [ allow | deny | reject ] [ in | out ] < port\_\#/[ tcp | udp ] | protocol\_name >}
+    {
+        Add a rule with respect to a certain port to the firewall.;
+        \texttt{deny} will instruct the firewall to drop packets silently while \texttt{reject} may instruct the firewall to respond with error messages.;
+        If direction is not specified, \texttt{in} will be the default value.;
+        Available \texttt{<protocol\_name>} can be found in the file \texttt{/etc/services}.;
+        \textbf{Example:} \texttt{sudo ufw allow ssh} is equivalent to \texttt{sudo ufw allow 22/tcp}.
+    }
+
+\section{Kernel}
+
+    \CommandEntry{sudo dmesg}
+    {
+        Output messages produced by kernel ring buffer.;
+        \texttt{-T}: human-readable timestamps (but inaccurate).;
+        \texttt{--follow}: real-time monitoring.;
+        \texttt{-l <log\_level\_list>}: filter the output by log levels. \texttt{<log\_level\_list>} can be a comma separated list. For example, \texttt{sudo dmesg -l warn,err} 
     }
 
 \section{Power Source Management}
 
     \CommandEntry{upower -e}
     {
-        Enumerate all power source related devices.
+        Enumerate all power supply devices.;
+        Each device is specified by a D-Bus object path. Not the path in the file system.
     }
 
-    \CommandEntry{upower -i <dev\_file>}
+    \CommandEntry{upower -i <path>}
     {
-        Get all information about \texttt{<dev\_file>}.;
-        The list of \texttt{<dev\_file>} can be obtained via \texttt{upower -e}.
+        Get all information about the power supply device specified by \texttt{<path>}.;
+        The list of \texttt{<path>} can be obtained via \texttt{upower -e}.
     }
 
 \section{Git}
@@ -588,6 +655,20 @@
     \CommandEntry{git status}
     {
         Retrieve the status of the current branch.
+    }
+
+\section{Important Files}
+
+    \FileEntry{/etc/services}
+    {
+        List of well-known network protocols with their ports.;
+        Protocols listed herein can be used in the firewall rules of UFW.
+    }
+
+    \FileEntry{/etc/ssh/ssh\_host\_*\_key.pub}
+    {
+        SSH server public keys provided that the current machine acts as a server.;
+        Fingerprints will be used to authenticate the server on the first connecting attempt.
     }
 
 \end{document}
