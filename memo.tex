@@ -446,11 +446,68 @@
         Specify multiple patterns to match.
     }
 
-    \CommandEntry{gzip <file\_list>}
-    {
-        Compress files.;
-        Wildcards can be used for \texttt{<file\_list>}
-    }
+    \subsection{Gzip}
+
+        \CommandEntry{gzip <file1 file2 file3 \dots filen>}
+        {
+            Compress files \textbf{in place}.;
+            Wildcards can be used in \texttt{<file1 file2 file3 \dots filen>}.;
+            \texttt{<file1 file2 file3 \dots filen>} will be deleted after compression.
+        }
+
+        \CommandEntry{gzip -d <gzip\_archive1 gzip\_archive2 \dots gzip\_archiven>}
+        {
+            Decompress a gzip archive \textbf{in place}.;
+            \texttt{<gzip\_archive1, gzip\_archive2, \dots, gzip\_archiven>} will be deleted after decompression.;
+            Equivalent to \texttt{gunzip <gzip\_archive1, gzip\_archive2, \dots, gzip\_archiven>} while \texttt{gunzip} is a shell script which utilize \texttt{gzip -d}
+        }
+
+        \CommandEntry{gzip -r <dir>}
+        {
+            Descend into \texttt{<dir>} recursively and compress files \textbf{in place}.;
+            \texttt{-r} alone should be interpreted as "perform the task recursively".;
+            Will not archive the whole directory structure into the archive. So, use \texttt{tar} to archive the directory first before compression.;
+            Combining with \texttt{-d} option will descend into \texttt{<dir>} recursively and decompress files \textbf{in place}.
+        }
+
+        \CommandEntry{gzip -v <file1 file2 file3 \dots filen>}
+        {
+            Verbose mode. Print old file names, new file names, and compression ratio.;
+            \texttt{-v} alone should be interpreted as "perform the task in verbose mode".;
+            Can be used with \texttt{-d} and \texttt{-r} etc.
+        }
+
+        \CommandEntry{gzip -l <gzip\_archive1 gzip\_archive2 \dots gzip\_archiven>}
+        {
+            List the detailed information about \texttt{<gzip\_archive1 gzip\_archive2 \dots gzip\_archiven>};
+            Can be used with \texttt{-r}
+        }
+
+        \CommandEntry{gzip -k <file1 file2 file3 \dots filen>}
+        {
+            Compress files but keep the original files after completion.;
+            \texttt{-k} alone should be interpreted as "keep the original files after completion".;
+            Can be used with \texttt{-d}
+        }
+
+        \CommandEntry{gzip -<\#> <file1 file2 file3 \dots filen>}
+        {
+            Set compression level, which can be 1 to 9. Higher the level, larger the compression ratio, slower the speed.;
+            \texttt{-1} is equivalent to \texttt{--fast} and \texttt{-9} is equivalent to \texttt{--best}
+        }
+
+        \CommandEntry{gzip -f <file1 file2 file3 \dots filen>}
+        {
+            If files with the same names exist, overwrite after compression.;
+            Pretty useful if we want to run in non-interactive mode.;
+            Can be used with \texttt{-d}
+        }
+
+        \CommandEntry{gzip --suffix <new\_suffix> <file1 file2 file3 \dots filen>}
+        {
+            Use the specified suffix instead of the default one for compression.;
+            \texttt{<new\_suffix>} should be preceded by a dot (.) for the expected effect.
+        }
 
 \section{Networks}
 
