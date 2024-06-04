@@ -86,7 +86,7 @@
 
     \CommandEntry{help <topic>}
     {
-        Retrieve help information about \texttt{<topic>}. \texttt{<topic>} should be a built-in command.
+        Retrieve help information about \texttt{<topic>} \texttt{<topic>} should be a built-in command.
     }
 
 \section{Navigating the File System}
@@ -103,7 +103,13 @@
 
     \CommandEntry{ls <filter>}
     {
-        Filter the output to match the pattern specified by \texttt{<filter>}. Wildcards are applicable here.
+        Filter the output to match the pattern specified by \texttt{<filter>} Wildcards are applicable here.
+    }
+
+    \CommandEntry{ls -l}
+    {
+        Long listing.;
+        \textbf{Note:} apply \texttt{ls -l} to a symbolic link of a directory won't list the files within the underlying directory. However, apply \texttt{ls} will.
     }
 
     \CommandEntry{ls -F}
@@ -118,7 +124,7 @@
 
     \CommandEntry{ls -d <dir\_path>}
     {
-        Display the info of \texttt{<dir\_path>} instead of peek into the \texttt{<dir\_path>}.
+        Display the info of \texttt{<dir\_path>} instead of peek into the \texttt{<dir\_path>}
     }
 
     \CommandEntry{ls -l --time=atime}
@@ -145,50 +151,50 @@
 
     \CommandEntry{cp <src> <dst>}
     {
-        Copy \texttt{<src>} to \texttt{<dst>}. Wildcards can be used on \texttt{<src>} to copy multiple files.
+        Copy \texttt{<src>} to \texttt{<dst>} Wildcards can be used on \texttt{<src>} to copy multiple files.
     }
 
     \CommandEntry{cp -i <src> <dst>}
     {
-        Copy \texttt{<src>} to \texttt{<dst>}. Inform the user before overwriting.;
+        Copy \texttt{<src>} to \texttt{<dst>} Inform the user before overwriting.;
         \textbf{Highly recommended usage.}
     }
 
     \CommandEntry{ln -s <src> <sym\_link>}
     {
-        Create a symbolic link \texttt{<sym\_link>} pointing to \texttt{<src>}.;
-        \textbf{Do not copy symbolic links, which can easily result in confusion}.
+        Create a symbolic link \texttt{<sym\_link>} pointing to \texttt{<src>};
+        \textbf{Do not copy symbolic links, which can easily result in confusion}
     }
 
     \CommandEntry{ln <src> <hard\_link>}
     {
-        Create a hard link \texttt{<hard\_link>} pointing to \texttt{<src>}.;
-        \textbf{Do not copy hard links, which can easily result in confusion}.;
+        Create a hard link \texttt{<hard\_link>} pointing to \texttt{<src>};
+        \textbf{Do not copy hard links, which can easily result in confusion};
         \textbf{You cannot create hard links for the files residing on a different physical media.}
     }
 
     \CommandEntry{mv <src> <dst>}
     {
-        Move \texttt{<src>} to \texttt{<dst>}.;
+        Move \texttt{<src>} to \texttt{<dst>};
         "Move" is a fancy way to say "rename" in the Linux world.;
         \texttt{mv} can only change file names. It cannot change inode numbers or timestamps of files.
     }
 
     \CommandEntry{mv -i <src> <dst>}
     {
-        Move \texttt{<src>} to \texttt{<dst>}. Inform the user before overwriting.;
+        Move \texttt{<src>} to \texttt{<dst>} Inform the user before overwriting.;
         \textbf{Highly recommended usage.}
     }
 
     \CommandEntry{rm -i <file>}
     {
-        Inform users before removing \texttt{<file>}.;
+        Inform users before removing \texttt{<file>};
         \textbf{Highly recommended usage.}
     }
 
     \CommandEntry{rmdir <empty\_dir>}
     {
-        Remove the empty directory \texttt{<empty\_dir>}.;
+        Remove the empty directory \texttt{<empty\_dir>};
         Fail when the specified directory is not empty.
     }
 
@@ -200,7 +206,7 @@
 
     \CommandEntry{find <dir> -iname <pattern>}
     {
-        Find occurences of case insensitive \texttt{<pattern>} in the directory \texttt{<dir>}.;
+        Find occurences of case insensitive \texttt{<pattern>} in the directory \texttt{<dir>};
         \texttt{<pattern>} can be regex to match file names.
     }
 
@@ -224,7 +230,7 @@
 
     \CommandEntry{cat -T <file>}
     {
-        Replace Tabs with \texttt{\string^I}.
+        Replace Tabs with \texttt{\string^I}
     }
 
     \CommandEntry{zcat <gz\_file>}
@@ -242,21 +248,21 @@
 
     \CommandEntry{less <file>}
     {
-        A more powerful utility than \texttt{more}.;
-        \textit{Less is more}.
+        A more powerful utility than \texttt{more};
+        \textit{Less is more}
     }
 
     \CommandEntry{head -n <\#> <file>}
     {
         Display the first \texttt{<\#>} lines of the file.;
-        Shorthand form: \texttt{head -<\#> <file>}.;
+        Shorthand form: \texttt{head -<\#> <file>};
         By default, \texttt{head} display the first 10 lines.
     }
 
     \CommandEntry{tail -n <\#> <file>}
     {
         Display the last \texttt{<\#>} lines of the file.;
-        Shorthand form: \texttt{tail -<\#> <file>}.;
+        Shorthand form: \texttt{tail -<\#> <file>};
         By default, \texttt{tail} display the first 10 lines.
     }
 
@@ -281,7 +287,7 @@
 
     \CommandEntry{ps l}
     {
-        Alternative to \texttt{ps -l}.;
+        Alternative to \texttt{ps -l};
         Give more detailed information about status code.;
         \texttt{l} is a BSD style parameter.
     }
@@ -289,7 +295,7 @@
     \CommandEntry{ps --forest}
     {
         Display the hierarchical structure of the processes.;
-        Shorthand form: \texttt{ps f}.;
+        Shorthand form: \texttt{ps f};
         \texttt{--forest} is a GNU style parameter.
     }
 
@@ -314,7 +320,7 @@
 
     \CommandEntry{sudo killall <PNAME>}
     {
-        Stop the processes by their names. Wildcards is applicable in \texttt{<PNAME>}.
+        Stop the processes by their names. Wildcards is applicable in \texttt{<PNAME>}
     }
 
 \section{System Services Management}
@@ -327,18 +333,23 @@
     \CommandEntry{sudo systemctl disbale <service>}
     {
         Disable \texttt{<service>} from starting at the boot time.;
-        Reverse operation of \texttt{sudo systemctl enable <service>}.
+        Reverse operation of \texttt{sudo systemctl enable <service>}
     }
 
     \CommandEntry{sudo systemctl start <service>}
     {
-        Start a stopped service \texttt{<service>}.
+        Start a stopped service \texttt{<service>}
     }
 
     \CommandEntry{sudo systemctl stop <service>}
     {
-        Stop a running service \texttt{<service>}.;
-        Reverse operation of \texttt{sudo systemctl start <service>}.
+        Stop a running service \texttt{<service>};
+        Reverse operation of \texttt{sudo systemctl start <service>}
+    }
+
+    \CommandEntry{sudo systemctl reload <service>}
+    {
+        Reload \texttt{<service>} after modify its configuration files.
     }
 
 \section{Manage Secondary Storage Media}
@@ -350,14 +361,14 @@
 
     \CommandEntry{mount -t <filesys\_type> <dev\_file> <mount\_dir>}
     {
-        Mount the device specified by \texttt{<dev\_file>} to the directory \texttt{<mount\_dir>}.;
+        Mount the device specified by \texttt{<dev\_file>} to the directory \texttt{<mount\_dir>};
         \texttt{<filesys\_type>} is the type of the file system residing on the device.
     }
 
     \CommandEntry{umount <mount\_dir | dev\_file>}
     {
         Unmount a mounting media by either the mounting directory or device file name.;
-        The name of the command is \texttt{umount}, not \texttt{unmount}.;
+        The name of the command is \texttt{umount}, not \texttt{unmount};
         If the media is using by some processes, unmount will fail.
     }
 
@@ -406,13 +417,13 @@
 
     \CommandEntry{sort -t <delimiter> -k <field\_1, field\_2, \dots> <file>}
     {
-        \texttt{-t}: split each line with \texttt{<delimiter>}.;
+        \texttt{-t}: split each line with \texttt{<delimiter>};
         \texttt{-k}: after spliting, treat \texttt{<field\_1, field\_2, \dots>} as a joint key.
     }
 
     \CommandEntry{cut -d <delimiter> -f <number> <file>}
     {
-        Process \texttt{<file>} line by line. Split each line into fields with the \texttt{<delimiter>}. Only preserve the \texttt{<number>}-th (one-based) field to output.
+        Process \texttt{<file>} line by line. Split each line into fields with the \texttt{<delimiter>} Only preserve the \texttt{<number>}-th (one-based) field to output.
     }
 
     \CommandEntry{grep -v <pattern> <file>}
@@ -438,7 +449,7 @@
     \CommandEntry{gzip <file\_list>}
     {
         Compress files.;
-        Wildcards can be used for \texttt{<file\_list>}.
+        Wildcards can be used for \texttt{<file\_list>}
     }
 
 \section{Networks}
@@ -446,15 +457,15 @@
     \CommandEntry{ssh-keygen -t <key\_type> -b <key\_length>}
     {
         Generate ssh key pair.;
-        \texttt{<key\_type>} is usually \texttt{rsa}.;
+        \texttt{<key\_type>} is usually \texttt{rsa};
         \texttt{<key\_length>} is usaully 4096 (in bits).
     }
 
     \CommandEntry{ssh-keygen -l -f <keyfile>}
     {
-        Get the SHA-256 fingerprint of the \texttt{<keyfile>}.;
+        Get the SHA-256 fingerprint of the \texttt{<keyfile>};
         Usually, this command is used to obtain the host pubkey fingerprint during the first connection.;
-        \texttt{sudo ssh-keygen -l -f /etc/ssh/<pubkey>}.
+        \texttt{sudo ssh-keygen -l -f /etc/ssh/<pubkey>}
     }
 
     \CommandEntry{ssh-copy-id -i <pubkey> <user>@<host>}
@@ -466,9 +477,9 @@
 
     \CommandEntry{ss -o state established [ dport | sport ] = :<port \#>}
     {
-        Display the established socket whose remote or local port number is \texttt{<port \#>}.;
+        Display the established socket whose remote or local port number is \texttt{<port \#>};
         \texttt{dport} is the remote port. \texttt{sport} is the local port.;
-        Filters can be combined using \texttt{and}, \texttt{or}. For example, \texttt{ss -o state established '( dport = :<port \#1> or sport = :<port \#2> )'};
+        Filters can be combined using \texttt{and}, \texttt{or} For example, \texttt{ss -o state established '( dport = :<port \#1> or sport = :<port \#2> )'};
         \textbf{Example:} \texttt{ss -o state established '( dport = :ssh or sport = :ssh )'} will retrieve all incoming and outgoing SSH connections on the local machine.
     }
 
@@ -502,8 +513,8 @@
         Add a rule with respect to a certain port to the firewall.;
         \texttt{deny} will instruct the firewall to drop packets silently while \texttt{reject} may instruct the firewall to respond with error messages.;
         If direction is not specified, \texttt{in} will be the default value.;
-        Available \texttt{<protocol\_name>} can be found in the file \texttt{/etc/services}.;
-        \textbf{Example:} \texttt{sudo ufw allow ssh} is equivalent to \texttt{sudo ufw allow 22/tcp}.
+        Available \texttt{<protocol\_name>} can be found in the file \texttt{/etc/services};
+        \textbf{Example:} \texttt{sudo ufw allow ssh} is equivalent to \texttt{sudo ufw allow 22/tcp}
     }
 
 \section{Kernel}
@@ -526,8 +537,8 @@
 
     \CommandEntry{upower -i <path>}
     {
-        Get all information about the power supply device specified by \texttt{<path>}.;
-        The list of \texttt{<path>} can be obtained via \texttt{upower -e}.
+        Get all information about the power supply device specified by \texttt{<path>};
+        The list of \texttt{<path>} can be obtained via \texttt{upower -e}
     }
 
 \section{Git}
@@ -561,55 +572,55 @@
 
     \CommandEntry{git branch -M <new\_name>}
     {
-        Forcibly rename the current branch with the new name \texttt{<new\_name>}.
+        Forcibly rename the current branch with the new name \texttt{<new\_name>}
     }
 
     \CommandEntry{git checkout <branch\_name>}
     {
-        Switch to the branch \texttt{<branch\_name>}.
+        Switch to the branch \texttt{<branch\_name>}
     }
 
     \CommandEntry{git checkout -b <branch\_name>}
     {
         Create a new branch named \texttt{<branch\_name>} and switch to it immediately, providing that \texttt{<branch\_name>} does not exist.;
-        Shorthand for \texttt{git branch <branch\_name>} and \texttt{git checkout <branch\_name>}.
+        Shorthand for \texttt{git branch <branch\_name>} and \texttt{git checkout <branch\_name>}
     }
 
     \CommandEntry{git checkout <commit\_id>}
     {
         Jump to a specific commit temporarily.;
-        \texttt{<commit\_id>} can be retrieved by running \texttt{git log}.;
-        Use \texttt{git checkout <current\_branch>} to come back to the \texttt{HEAD}.
+        \texttt{<commit\_id>} can be retrieved by running \texttt{git log};
+        Use \texttt{git checkout <current\_branch>} to come back to the \texttt{HEAD}
     }
 
     \CommandEntry{git stash}
     {
         Move away all modifications made on top of the \texttt{HEAD} and save them somewhere.;
-        Equivalent to \texttt{git stash push}.
+        Equivalent to \texttt{git stash push}
     }
 
     \CommandEntry{git stash pop}
     {
-        Reverse operation of \texttt{git stash push}.
+        Reverse operation of \texttt{git stash push}
     }
 
     \CommandEntry{git remote -v}
     {
         Show remote repository's URL after its name.;
-        Shorthand for \texttt{git remote --verbose}.
+        Shorthand for \texttt{git remote --verbose}
     }
 
     \CommandEntry{git remote add <name> <url>}
     {
-        Add a remote repository witn name as \texttt{<name>} at \texttt{<url>}.;
-        \textbf{Example:} \texttt{git remote add origin https://<TOKEN>@github.com/<username>/<repository>.git}.;
+        Add a remote repository witn name as \texttt{<name>} at \texttt{<url>};
+        \textbf{Example:} \texttt{git remote add origin https://<TOKEN>@github.com/<username>/<repository>.git};
         \textbf{Note:} \texttt{https://<TOKEN>@github.com/<username>/<repository>.git} is a basic authentication URL. With such kind of URL, you don't need to enter your credentials for every push manually. But in this way, your token is stored in a plain text so it can be retrieved easily, whish may introduce additional security risk. Do it at your own risk!
     }
 
     \CommandEntry{git remote set-url <name> <new\_url>}
     {
-        Change the URL of the remote repository \texttt{<name>} to \texttt{<new\_url>}.;
-        \textbf{Example:} \texttt{git remote set-url origin https://<TOKEN>@github.com/<username>/<repository>.git}.
+        Change the URL of the remote repository \texttt{<name>} to \texttt{<new\_url>};
+        \textbf{Example:} \texttt{git remote set-url origin https://<TOKEN>@github.com/<username>/<repository>.git}
     }
 
     \CommandEntry{git add <file>}
@@ -619,20 +630,20 @@
 
     \CommandEntry{git commit -m "<msg>"}
     {
-        Commit all work in the staging area to the local repository with commit message \texttt{<msg>}.;
+        Commit all work in the staging area to the local repository with commit message \texttt{<msg>};
         Use \texttt{-a} option together to add all modified or deleted files to the staging area. Note that new files haven't been indexed won't be affected.
     }
 
     \CommandEntry{git push -u <remote\_name> <local\_branch>}
     {
-        Set the upstream (push destination) as \texttt{<remote\_name>} for \texttt{<local\_branch>}, and push \texttt{<local\_branch>} to \texttt{<remote\_name>}.;
+        Set the upstream (push destination) as \texttt{<remote\_name>} for \texttt{<local\_branch>}, and push \texttt{<local\_branch>} to \texttt{<remote\_name>};
         \textbf{Example:} \texttt{git push -u origin main};
-        Run \texttt{git push} on the \texttt{main} branch next time will directly push it to \texttt{origin}.
+        Run \texttt{git push} on the \texttt{main} branch next time will directly push it to \texttt{origin}
     }
 
     \CommandEntry{git clone <url>}
     {
-        Clone / Download a git repository from \texttt{<url>}.
+        Clone / Download a git repository from \texttt{<url>}
     }
 
     \CommandEntry{git pull}
@@ -665,10 +676,24 @@
         Protocols listed herein can be used in the firewall rules of UFW.
     }
 
+    \FileEntry{/etc/ssh/sshd\_config}
+    {
+        SSH server configuration file.
+    }
+
     \FileEntry{/etc/ssh/ssh\_host\_*\_key.pub}
     {
         SSH server public keys provided that the current machine acts as a server.;
         Fingerprints will be used to authenticate the server on the first connecting attempt.
+    }
+
+    \FileEntry{/sys/class/power\_supply/}
+    {
+        \texttt{/sys/class/power\_supply/} contains kernel objects about power supplies.; 
+        \texttt{/sys/} is the mounting point of sysfs file system, which exposes kernel objects to the user space.;
+        \texttt{/sys/class/} groups the devices by classes.;
+        \texttt{/sys/class/power\_supply/BAT0} is a symbolic link to a directory which contains information about battery0.;
+        \texttt{/sys/class/power\_supply/BAT0/charge\_control\_end\_threshold} control the threshold stopping to charge the battery0. Changing the threshold will immediately affect the battery.
     }
 
 \end{document}
