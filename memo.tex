@@ -423,9 +423,10 @@
 
     \CommandEntry{ss -o state established [ dport | sport ] = :<port \#>}
     {
-        Display the established socket whose [ remote | local ] port number is \texttt{<port \#>}.;
+        Display the established socket whose remote or local port number is \texttt{<port \#>}.;
         \texttt{dport} is the remote port. \texttt{sport} is the local port.;
-        Filters can be connected using \texttt{and}, \texttt{or}. For example, \texttt{ss -o state established '( dport = :<port \#1> or sport = :<port \#2> )'}
+        Filters can be combined using \texttt{and}, \texttt{or}. For example, \texttt{ss -o state established '( dport = :<port \#1> or sport = :<port \#2> )'};
+        \textbf{Example:} \texttt{ss -o state established '( dport = :ssh or sport = :ssh )'} will retrieve all incoming and outgoing SSH connections on the local machine.
     }
 
     \CommandEntry{sudo ufw status verbose}
@@ -507,6 +508,24 @@
         Shorthand for \texttt{git branch <branch\_name>} and \texttt{git checkout <branch\_name>}.
     }
 
+    \CommandEntry{git checkout <commit\_id>}
+    {
+        Jump to a specific commit temporarily.;
+        \texttt{<commit\_id>} can be retrieved by running \texttt{git log}.;
+        Use \texttt{git checkout <current\_branch>} to come back to the \texttt{HEAD}.
+    }
+
+    \CommandEntry{git stash}
+    {
+        Move away all modifications made on top of the \texttt{HEAD} and save them somewhere.;
+        Equivalent to \texttt{git stash push}.
+    }
+
+    \CommandEntry{git stash pop}
+    {
+        Reverse operation of \texttt{git stash push}.
+    }
+
     \CommandEntry{git remote -v}
     {
         Show remote repository's URL after its name.;
@@ -515,12 +534,60 @@
 
     \CommandEntry{git remote add <name> <url>}
     {
-        Add a remote repository witn name as \texttt{<name>} at \texttt{<url>}.
+        Add a remote repository witn name as \texttt{<name>} at \texttt{<url>}.;
+        \textbf{Example:} \texttt{git remote add origin https://<TOKEN>@github.com/<username>/<repository>.git}.;
+        \textbf{Note:} \texttt{https://<TOKEN>@github.com/<username>/<repository>.git} is a basic authentication URL. With such kind of URL, you don't need to enter your credentials for every push manually. But in this way, your token is stored in a plain text so it can be retrieved easily, whish may introduce additional security risk. Do it at your own risk!
     }
 
     \CommandEntry{git remote set-url <name> <new\_url>}
     {
-        Change the URL of the remote repository \texttt{<name>} to \texttt{<new\_url>}.
+        Change the URL of the remote repository \texttt{<name>} to \texttt{<new\_url>}.;
+        \textbf{Example:} \texttt{git remote set-url origin https://<TOKEN>@github.com/<username>/<repository>.git}.
+    }
+
+    \CommandEntry{git add <file>}
+    {
+        Add \texttt{file} to the staging area.
+    }
+
+    \CommandEntry{git commit -m "<msg>"}
+    {
+        Commit all work in the staging area to the local repository with commit message \texttt{<msg>}.;
+        Use \texttt{-a} option together to add all modified or deleted files to the staging area. Note that new files haven't been indexed won't be affected.
+    }
+
+    \CommandEntry{git push -u <remote\_name> <local\_branch>}
+    {
+        Set the upstream (push destination) as \texttt{<remote\_name>} for \texttt{<local\_branch>}, and push \texttt{<local\_branch>} to \texttt{<remote\_name>}.;
+        \textbf{Example:} \texttt{git push -u origin main};
+        Run \texttt{git push} on the \texttt{main} branch next time will directly push it to \texttt{origin}.
+    }
+
+    \CommandEntry{git clone <url>}
+    {
+        Clone / Download a git repository from \texttt{<url>}.
+    }
+
+    \CommandEntry{git pull}
+    {
+        Download and overwrite the current branch from the remote repository.
+    }
+
+    \CommandEntry{git merge <src\_branch>}
+    {
+        Apply all divergent changes made on \texttt{<src\_branch>} to the current branch.;
+        A new commit will be made on the current branch to record the merge operation if no conflict occurs.;
+        If any conflicts occur, manually resolve all conflicts. Use \texttt{git add} to mark the completion. Use \texttt{git commit} to finalize the merge operation.
+    }
+
+    \CommandEntry{git log}
+    {
+        Retrieve the commit logs of the current branch.
+    }
+
+    \CommandEntry{git status}
+    {
+        Retrieve the status of the current branch.
     }
 
 \end{document}
