@@ -330,7 +330,7 @@
         Enable \texttt{<service>} to automatically run at the boot time.
     }
 
-    \CommandEntry{sudo systemctl disbale <service>}
+    \CommandEntry{sudo systemctl disable <service>}
     {
         Disable \texttt{<service>} from starting at the boot time.;
         Reverse operation of \texttt{sudo systemctl enable <service>}
@@ -362,7 +362,16 @@
     \CommandEntry{mount -t <filesys\_type> <dev\_file> <mount\_dir>}
     {
         Mount the device specified by \texttt{<dev\_file>} to the directory \texttt{<mount\_dir>};
-        \texttt{<filesys\_type>} is the type of the file system residing on the device.
+        \texttt{<filesys\_type>} is the type of the file system residing on the device.;
+        \textbf{Example: Creating RAM Disk} \\
+        \texttt{mount -t tmpfs -o size=512M,noswap ramdisk /mnt/ramdisk}
+        \begin{itemize}
+            \item using RAM-based \texttt{tmpfs} file system
+            \item mounting point is \texttt{/mnt/ramdisk}
+            \item name \texttt{ramdisk} and size \texttt{512M}
+            \item swap functionality built in \texttt{tmpfs} is disabled
+            \item \texttt{size} and \texttt{noswap} can be found in \texttt{man 5 tmpfs}
+        \end{itemize}
     }
 
     \CommandEntry{umount <mount\_dir | dev\_file>}
@@ -389,6 +398,23 @@
         \texttt{-s} output the size for each directory listed. (summary functionality);
         \texttt{-c} will give a grand total result for all directories at the end of the output.;
         \texttt{-h} will convert the space into human-readable form.
+    }
+
+    \CommandEntry{dd if=/dev/zero of=<output\_file> bs=1M count=256 conv=fdatasync}
+    {
+        Test the write speed of a file system.;
+        \texttt{<output\_file>} should be located in the file system to be tested.;
+        \texttt{bs} is block size.;
+        \texttt{count} is the number of the blocks to be written.;
+        \texttt{conv=fdatasync} will ensure the data have been physically written to the storage media before the program returns.
+    }
+
+    \CommandEntry{dd if=<input\_file> of=/dev/null bs=1M}
+    {
+        Test the read speed of a file system.;
+        \texttt{<input\_file>} should be located in the file system to be tested.;
+        \texttt{conv=fdatasync} is not necessary because no writing is involved.;
+        Read means copying data to the main memory from the storage media.
     }
 
 \section{Manipulating Data Files}
@@ -555,7 +581,7 @@
         Enable the firewall.
     }
 
-    \CommandEntry{sudo ufw disbale}
+    \CommandEntry{sudo ufw disable}
     {
         Disable the firewall.
     }
@@ -698,6 +724,18 @@
         Run \texttt{git push} on the \texttt{main} branch next time will directly push it to \texttt{origin}
     }
 
+    \CommandEntry{git config --local pull.rebase true}
+    {
+        Use rebase to fix the divergent branch while performing pull operation.;
+        \textbf{Use Scenario:} different new changes have committed to the both remote and local branch. New changes committed to the local branch will be based on the new changes committed to the remote branch if rebase is enabled.;
+        \textbf{Frequently Seen Command Sequence:} \\
+        \texttt{git commit  \# commit new features to the local branch} \\
+        \texttt{git push  \# failed due to divergent branch} \\
+        \texttt{git config --local pull.rebase true  \# if not configured before} \\
+        \texttt{git add <confilcted\_files>} \\
+        \texttt{git rebase --continue}
+    }
+
     \CommandEntry{git clone <url>}
     {
         Clone / Download a git repository from \texttt{<url>}
@@ -726,6 +764,16 @@
     }
 
 \section{Important Files}
+
+    \FileEntry{/dev/zero}
+    {
+        Provides continuous zero bytes as read from it.
+    }
+
+    \FileEntry{/dev/null}
+    {
+        Discard any data output to it.
+    }
 
     \FileEntry{/etc/services}
     {
