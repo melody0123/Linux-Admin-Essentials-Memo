@@ -648,6 +648,57 @@
             Edit the environment variable \texttt{HISTSIZE} to change the number of records that will be kept.
         }
 
+    \subsection{Environment Variables}
+
+        \CommandEntry{env}
+        {
+            Print all system environment variables.
+        }
+
+        \CommandEntry{printenv}
+        {
+            Print all system environment variables.;
+            \texttt{printenv <var\_name>} print the value of the specified \textbf{system} variable.
+        }
+
+        \CommandEntry{set}
+        {
+            Display all variables defined for a specific process.
+        }
+
+        \CommandEntry{<var\_name>=<value>}
+        {
+            Define or change a local environment variable.;
+            Local Variables are visible only in the shell session where it was defined.;
+            No whitespaces.;
+            \texttt{<value>} can be either numeric or a string.;
+            \texttt{<var\_name>} should be in lowercase if it's a user-defined variable.;
+            \texttt{<var\_name>} should be in uppercase if it's a system variable.
+        }
+
+        \CommandEntry{export <var\_name>}
+        {
+            Set an existing local variable to be global.;
+            Global variables defined in a parent shell is visible to the child shell. Converse is not true.;
+            Any modifications to the global variables done by a child shell will not affect the global variables in the parent shell.
+        }
+
+        \CommandEntry{PATH=\$PATH:<new\_location>}
+        {
+            Append new locations to the \texttt{PATH} environment variable.;
+            Remember to \texttt{export} the new \texttt{PATH} variable.;
+            Changes can only last until we exit the system or reboot the system.
+        }
+
+\section{User Management}
+
+    \CommandEntry{id -g <username>}
+    {
+        Display active group IDs of the specified user.;
+        If \texttt{<username>} is ignored, user of the current process will be used.;
+        Combine with \texttt{-n} option to convert group IDs to group names.;
+        Use \texttt{-G} to display all IDs of groups that the user belongs to.
+    }
 
 \section{Networks}
 
@@ -886,6 +937,22 @@
 
 \section{Important Environment Variables}
 
+    \EnvVarEntry{BASH}
+    {
+        Full pathname to execute current running bash instance.
+    }
+
+    \EnvVarEntry{SHELL}
+    {
+        Full pathname to the bash shell.
+    }
+
+    \EnvVarEntry{SHLVL}
+    {
+        Shell level of the current running shell.;
+        Increment by 1 in a new child shell.
+    }
+
     \EnvVarEntry{BASH\_SUBSHELL}
     {
         Number of subshells running.
@@ -894,6 +961,77 @@
     \EnvVarEntry{HISTSIZE}
     {
         Number of bash history records that will be kept.
+    }
+
+    \EnvVarEntry{HOSTNAME}
+    {
+        The name of the current host.
+    }
+
+    \EnvVarEntry{HOSTTYPE}
+    {
+        A string describe the machine that the bash session is running on.
+    }
+
+    \EnvVarEntry{LINENO}
+    {
+        Line number of the script currently being executed.
+    }
+
+    \EnvVarEntry{SECONDS}
+    {
+        The number of seconds since shell was started.
+    }
+
+    \EnvVarEntry{PWD}
+    {
+        Current working directory.
+    }
+
+    \EnvVarEntry{OLDPWD}
+    {
+        The previous working directory.
+    }
+
+    \EnvVarEntry{PPID}
+    {
+        Process ID of the current bash shell's parent.
+    }
+
+    \EnvVarEntry{\$}
+    {
+        Process ID of the current bash shell process.
+    }
+
+    \EnvVarEntry{HOME}
+    {
+        Current user home directory location.
+    }
+
+    \EnvVarEntry{UID}
+    {
+        User ID of the current user.
+    }
+
+    \EnvVarEntry{PATH}
+    {
+        A colon-separated list where shell looks for commands.
+    }
+
+    \EnvVarEntry{PS1}
+    {
+        TODO
+    }
+
+    \EnvVarEntry{PS2}
+    {
+        TODO
+    }
+
+    \EnvVarEntry{RAMDOM}
+    {
+        Returns a random number between 0 to 32767.;
+        Assigning a need to this environment variable will seed the pseudo-random number generator.
     }
 
 \section{Important Files}
@@ -950,6 +1088,23 @@
     {
         External / filesystem commands, opposite to built-in commands.;
         \textbf{Examples:} \texttt{/bin}, \texttt{/usr/bin}, \texttt{/sbin}, and \texttt{/usr/sbin}
+    }
+
+    \FileEntry{/etc/profile}
+    {
+        Main startup file for the bash shell when acting as a login shell.
+    }
+
+    \FileEntry{/etc/profile.d}
+    {
+        The directory to place application-specific startup files at the login time.;
+        All files under this directory will be sourced by \texttt{/etc/profile}
+    }
+
+    \FileEntry{\$HOME/.bashrc}
+    {
+        User-specific startup file to define user-specific environment variables.;
+        \texttt{\$HOME/.profile}, \texttt{\$HOME/.bash\_profile}, \texttt{\$HOME/.bash\_login} are also user-specific startup files, but only some of them will be used. 
     }
 
 \end{document}
