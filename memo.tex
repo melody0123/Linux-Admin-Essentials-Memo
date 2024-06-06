@@ -31,6 +31,18 @@
 }
 \ExplSyntaxOff
 
+\ExplSyntaxOn
+\NewDocumentCommand{\EnvVarEntry}{mm}
+{
+    \texttt{#1}
+    \begin{itemize}
+        \seq_set_split:Nnn \l_tmpa_seq { ; } { #2 } % set semicolon as list item separator
+        \seq_map_inline:Nn \l_tmpa_seq { \item ##1 }
+    \end{itemize}
+    \vspace{1em}
+}
+\ExplSyntaxOff
+
 \begin{document}
 
 \section{Accessibility}
@@ -472,68 +484,170 @@
         Specify multiple patterns to match.
     }
 
-    \subsection{Gzip}
+    \CommandEntry{gzip <file1> <file2> <file3> \dots <filen>}
+    {
+        Compress files \textbf{in place}.;
+        Wildcards can be used in \texttt{<file1> <file2> <file3> \dots <filen>}.;
+        \texttt{<file1> <file2> <file3> \dots <filen>} will be deleted after compression.
+    }
 
-        \CommandEntry{gzip <file1 file2 file3 \dots filen>}
+    \CommandEntry{gzip -d <gzip\_archive1> <gzip\_archive2> \dots <gzip\_archiven>}
+    {
+        Decompress a gzip archive \textbf{in place}.;
+        \texttt{<gzip\_archive1> <gzip\_archive2> \dots <gzip\_archiven>} will be deleted after decompression.;
+        Equivalent to \texttt{gunzip <gzip\_archive1> <gzip\_archive2> \dots <gzip\_archiven>} while \texttt{gunzip} is a shell script which utilizes \texttt{gzip -d}
+    }
+
+    \CommandEntry{gzip -r <dir>}
+    {
+        Descend into \texttt{<dir>} recursively and compress files \textbf{in place}.;
+        \texttt{-r} alone should be interpreted as "perform the task recursively".;
+        Will not archive the whole directory structure into the archive. So, use \texttt{tar} to archive the directory first before compression.;
+        Combining with \texttt{-d} option will descend into \texttt{<dir>} recursively and decompress files \textbf{in place}.
+    }
+
+    \CommandEntry{gzip -v <file1> <file2> <file3> \dots <filen>}
+    {
+        Verbose mode. Print old file names, new file names, and compression ratio.;
+        \texttt{-v} alone should be interpreted as "perform the task in verbose mode".;
+        Can be used with \texttt{-d} and \texttt{-r} etc.
+    }
+
+    \CommandEntry{gzip -l <gzip\_archive1> <gzip\_archive2> \dots <gzip\_archiven>}
+    {
+        List the detailed information about \texttt{<gzip\_archive1> <gzip\_archive2> \dots <gzip\_archiven>};
+        Can be used with \texttt{-r}
+    }
+
+    \CommandEntry{gzip -k <file1> <file2> <file3> \dots <filen>}
+    {
+        Compress files but keep the original files after completion.;
+        \texttt{-k} alone should be interpreted as "keep the original files after completion".;
+        Can be used with \texttt{-d}
+    }
+
+    \CommandEntry{gzip -<\#> <file1> <file2> <file3> \dots <filen>}
+    {
+        Set compression level, which can be 1 to 9. Higher the level, larger the compression ratio, slower the speed.;
+        \texttt{-1} is equivalent to \texttt{--fast} and \texttt{-9} is equivalent to \texttt{--best}
+    }
+
+    \CommandEntry{gzip -f <file1> <file2> <file3> \dots <filen>}
+    {
+        If files with the same names exist, overwrite after compression.;
+        Pretty useful if we want to run in non-interactive mode.;
+        Can be used with \texttt{-d}
+    }
+
+    \CommandEntry{gzip --suffix <new\_suffix> <file1> <file2> <file3> \dots <filen>}
+    {
+        Use the specified suffix instead of the default one for compression.;
+        \texttt{<new\_suffix>} should be preceded by a dot (.) for the expected effect.
+    }
+
+    \CommandEntry{tar -cvf <archive.tar> <object1> <object2> \dots <objectn>}
+    {
+        Archive all listed objects into the tar archive.;
+        Objects can be either files or directories.;
+        Unlike \texttt{gzip}, \texttt{tar} won't delete the original files archived. 
+    }
+
+    \CommandEntry{tar -tf <archive.tar>}
+    {
+        Only list the files of the tar archive.
+    }
+
+    \CommandEntry{tar -xvf <archive.tar>}
+    {
+        Extract everything from the tar archive.
+    }
+
+    \CommandEntry{tar -zxvf <archive.tgz>}
+    {
+        Extract everything from gzipped tar archive.;
+        \texttt{<archive.tgz>} can also be \texttt{<archive.tar.gz>}
+    }
+
+\section{Shell}
+
+    \subsection{Subshell}
+
+        \CommandEntry{bash <parameters>}
         {
-            Compress files \textbf{in place}.;
-            Wildcards can be used in \texttt{<file1 file2 file3 \dots filen>}.;
-            \texttt{<file1 file2 file3 \dots filen>} will be deleted after compression.
+            \texttt{<parameters>} can be: \\
+            \texttt{-c command} run \texttt{command} in the child shell. \\
+            \texttt{-i} start interactive shell. \\
+            \texttt{-l} start a login-like shell. \\
+            \texttt{-r} run restricted shell which limits users to the default directory. \\
+            \texttt{-s} read commands from standard input.
         }
 
-        \CommandEntry{gzip -d <gzip\_archive1 gzip\_archive2 \dots gzip\_archiven>}
+        \CommandEntry{( command1 ; command2 ; \dots ; commandn )}
         {
-            Decompress a gzip archive \textbf{in place}.;
-            \texttt{<gzip\_archive1, gzip\_archive2, \dots, gzip\_archiven>} will be deleted after decompression.;
-            Equivalent to \texttt{gunzip <gzip\_archive1, gzip\_archive2, \dots, gzip\_archiven>} while \texttt{gunzip} is a shell script which utilize \texttt{gzip -d}
+            Process list, a command grouping type. Run commands one by one in the subshell.;
+            \texttt{( command1 ; command2 ; ( command 3 ) )} will create a grandchild shell.;
+            Expensive method for multiprocessing. Not truly multiprocessing.;
+            \texttt{\{ command1; command2; \dots; commandn; \}} is another command grouping type but won't create subshell.;
+            \texttt{command1 ; command2 ; \dots ; commandn} will run commands one by one without starting a subshell.
         }
 
-        \CommandEntry{gzip -r <dir>}
+        \CommandEntry{<command>\&}
         {
-            Descend into \texttt{<dir>} recursively and compress files \textbf{in place}.;
-            \texttt{-r} alone should be interpreted as "perform the task recursively".;
-            Will not archive the whole directory structure into the archive. So, use \texttt{tar} to archive the directory first before compression.;
-            Combining with \texttt{-d} option will descend into \texttt{<dir>} recursively and decompress files \textbf{in place}.
+            Put the and run the command in background mode.;
+            Press Enter key to let the prompt come back.;
+            \texttt{[<\#\_of\_background\_jobs>] <PID>} will be given before the prompt returns.
         }
 
-        \CommandEntry{gzip -v <file1 file2 file3 \dots filen>}
+        \CommandEntry{<process\_list>\&}
         {
-            Verbose mode. Print old file names, new file names, and compression ratio.;
-            \texttt{-v} alone should be interpreted as "perform the task in verbose mode".;
-            Can be used with \texttt{-d} and \texttt{-r} etc.
+            Put the and run the process list in the background mode.;
+            Subshell's I/O is not tied to the terminal.
         }
 
-        \CommandEntry{gzip -l <gzip\_archive1 gzip\_archive2 \dots gzip\_archiven>}
+        \CommandEntry{jobs -l}
         {
-            List the detailed information about \texttt{<gzip\_archive1 gzip\_archive2 \dots gzip\_archiven>};
-            Can be used with \texttt{-r}
+            Display the detailed information about the background jobs.
         }
 
-        \CommandEntry{gzip -k <file1 file2 file3 \dots filen>}
+        \CommandEntry{coproc <command>}
         {
-            Compress files but keep the original files after completion.;
-            \texttt{-k} alone should be interpreted as "keep the original files after completion".;
-            Can be used with \texttt{-d}
+            Co-processing. Spawn a subshell in background mode and execute \texttt{<command>} within the subshell.;
+            Use extended syntax to specify the job name: \texttt{coproc <job\_name> \{ <command>; \}}
         }
 
-        \CommandEntry{gzip -<\#> <file1 file2 file3 \dots filen>}
+        \CommandEntry{coproc <process\_list>}
         {
-            Set compression level, which can be 1 to 9. Higher the level, larger the compression ratio, slower the speed.;
-            \texttt{-1} is equivalent to \texttt{--fast} and \texttt{-9} is equivalent to \texttt{--best}
+            Combine co-processing with process list.
         }
 
-        \CommandEntry{gzip -f <file1 file2 file3 \dots filen>}
+    \subsection{About Built-in Commands}
+
+        \CommandEntry{which <command\_driver>}
         {
-            If files with the same names exist, overwrite after compression.;
-            Pretty useful if we want to run in non-interactive mode.;
-            Can be used with \texttt{-d}
+            Find the file location of a command.;
+            Only works for external commands.
         }
 
-        \CommandEntry{gzip --suffix <new\_suffix> <file1 file2 file3 \dots filen>}
+        \CommandEntry{type -a <command\_driver>}
         {
-            Use the specified suffix instead of the default one for compression.;
-            \texttt{<new\_suffix>} should be preceded by a dot (.) for the expected effect.
+            Find all file locations of a command.;
+            \texttt{type} can also tell you whether a command is built-in or not.;
+            Some commands can have both flavor, which can be revealed by \texttt{type -a};
+            To use an external command which has multiple flavors, directly reference the file. For example, \texttt{/usr/bin/pwd}
         }
+
+        \CommandEntry{sudo -i}
+        {
+            Allow sudoers login as root in the current terminal seesion without needing root's password.;
+            \texttt{sudo su} also works.
+        }
+
+        \CommandEntry{history}
+        {
+            Show commands used recently in the bash shell.;
+            Edit the environment variable \texttt{HISTSIZE} to change the number of records that will be kept.
+        }
+
 
 \section{Networks}
 
@@ -763,6 +877,25 @@
         Retrieve the status of the current branch.
     }
 
+\section{Misc}
+
+    \CommandEntry{sleep <seconds>}
+    {
+        Ask the shell script to pause for \texttt{<seconds>}
+    }
+
+\section{Important Environment Variables}
+
+    \EnvVarEntry{BASH\_SUBSHELL}
+    {
+        Number of subshells running.
+    }
+
+    \EnvVarEntry{HISTSIZE}
+    {
+        Number of bash history records that will be kept.
+    }
+
 \section{Important Files}
 
     \FileEntry{/dev/zero}
@@ -799,6 +932,24 @@
         \texttt{/sys/class/} groups the devices by classes.;
         \texttt{/sys/class/power\_supply/BAT0} is a symbolic link to a directory which contains information about battery0.;
         \texttt{/sys/class/power\_supply/BAT0/charge\_control\_end\_threshold} control the threshold stopping to charge the battery0. Changing the threshold will immediately affect the battery.
+    }
+
+    \FileEntry{/etc/passwd}
+    {
+        Contains default shell program for each user.;
+        Default shell will be launched whenever a user starts a virtual console terminal or terminal emulator.
+    }
+
+    \FileEntry{/bin/sh}
+    {
+        A soft link. Indicates the default system shell.;
+        The default system shell is used to run system shell scripts.
+    }
+
+    \FileEntry{*bin*}
+    {
+        External / filesystem commands, opposite to built-in commands.;
+        \textbf{Examples:} \texttt{/bin}, \texttt{/usr/bin}, \texttt{/sbin}, and \texttt{/usr/sbin}
     }
 
 \end{document}
