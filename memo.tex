@@ -645,7 +645,34 @@
         \CommandEntry{history}
         {
             Show commands used recently in the bash shell.;
-            Edit the environment variable \texttt{HISTSIZE} to change the number of records that will be kept.
+            Commmand history of bash is stored in \texttt{/home/<username>/.bash\_history}.;
+            Command history is first written to the memory, then saved to the file after bash is exited.;
+            \texttt{.bash\_history} is only read when a bash session first starts.;
+            Edit the environment variable \texttt{HISTSIZE} to change the number of records that will be kept.;
+            Each bash session maintain their own history in the memory.;
+            \texttt{history -a} will append bash history in the memory to \texttt{.bash\_ history};
+            \texttt{history -n} will reread \texttt{.bash\_history}
+        }
+
+        \CommandEntry{!!}
+        {
+            Recall and execute the previous command.
+        }
+
+        \CommandEntry{!<\#>}
+        {
+            Pull out the \texttt{<\#>}-th history and execute.
+        }
+
+        \CommandEntry{alias -p}
+        {
+            See the list of aliases.
+        }
+
+        \CommandEntry{alias <new\_command>='<definition>'}
+        {
+            Create new aliases.;
+            Since \texttt{alias} is a built-in, new command is only active in the session where it is defined.
         }
 
     \subsection{Environment Variables}
@@ -935,7 +962,7 @@
         Ask the shell script to pause for \texttt{<seconds>}
     }
 
-\section{Important Environment Variables}
+\section{Environment Variables}
 
     \EnvVarEntry{BASH}
     {
