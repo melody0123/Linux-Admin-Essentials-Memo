@@ -672,7 +672,8 @@
         \CommandEntry{alias <new\_command>='<definition>'}
         {
             Create new aliases.;
-            Since \texttt{alias} is a built-in, new command is only active in the session where it is defined.
+            Since \texttt{alias} is a built-in, new command is only active in the session where it is defined.;
+            Place aliases into \texttt{.bashrc} to make them persistent.
         }
 
     \subsection{Environment Variables}
@@ -703,6 +704,11 @@
             \texttt{<var\_name>} should be in uppercase if it's a system variable.
         }
 
+        \CommandEntry{unset <var\_name>}
+        {
+            Remove an environment variable.
+        }
+
         \CommandEntry{export <var\_name>}
         {
             Set an existing local variable to be global.;
@@ -717,15 +723,63 @@
             Changes can only last until we exit the system or reboot the system.
         }
 
-\section{User Management}
+        \CommandEntry{<array\_name>=(<item1> <item2> \dots <itemn>)}
+        {
+            Variables array definition.
+        }
 
-    \CommandEntry{id -g <username>}
-    {
-        Display active group IDs of the specified user.;
-        If \texttt{<username>} is ignored, user of the current process will be used.;
-        Combine with \texttt{-n} option to convert group IDs to group names.;
-        Use \texttt{-G} to display all IDs of groups that the user belongs to.
-    }
+        \CommandEntry{\$\{<array\_name>[<index>]\}}
+        {
+            Reference to an element.;
+            \texttt{<index>} is zero-based.;
+            \texttt{\$\{<array\_name>\}} only gives you the first element.
+        }
+
+        \CommandEntry{\$\{<array\_name>[*]\}}
+        {
+            Get the entire array.
+        }
+
+        \CommandEntry{\$\{<array\_name>[<index>]=<new\_value>\}}
+        {
+            Change the value of an element.
+        }
+
+        \CommandEntry{unset <array\_name>}
+        {
+            Remove the entire array.
+        }
+
+        \CommandEntry{unset <array\_name>[<index>]}
+        {
+            Remove a certain element from the array.;
+            \textbf{Warning:} remove operation won't result in shifting elements to the left.
+        }
+
+\section{Permission Management}
+
+    \subsection{User Management}
+
+        \CommandEntry{useradd -m <login\_name>}
+        {
+            Create new user and set up home directory (\texttt{-m} option).;
+            It uses some default values stored in \texttt{/etc/default/useradd} to create up the user.
+        }
+
+        \CommandEntry{useradd -D}
+        {
+            Peek the system default used for \texttt{useradd}.;
+            Admin can place template files with the directory specified by \texttt{SKEL} field.
+            Add one more parameter can override the system default.
+        }
+
+        \CommandEntry{id -g <username>}
+        {
+            Display active group IDs of the specified user.;
+            If \texttt{<username>} is ignored, user of the current process will be used.;
+            Combine with \texttt{-n} option to convert group IDs to group names.;
+            Use \texttt{-G} to display all IDs of groups that the user belongs to.
+        }
 
 \section{Networks}
 
@@ -980,6 +1034,11 @@
         Increment by 1 in a new child shell.
     }
 
+    \EnvVarEntry{BASH\_ENV}
+    {
+        Used in non-interactive subshell. When set, the bash script specified by this variable will be run first before running any scripts.
+    }
+
     \EnvVarEntry{BASH\_SUBSHELL}
     {
         Number of subshells running.
@@ -1055,7 +1114,7 @@
         TODO
     }
 
-    \EnvVarEntry{RAMDOM}
+    \EnvVarEntry{RANDOM}
     {
         Returns a random number between 0 to 32767.;
         Assigning a need to this environment variable will seed the pseudo-random number generator.
@@ -1101,8 +1160,12 @@
 
     \FileEntry{/etc/passwd}
     {
-        Contains default shell program for each user.;
-        Default shell will be launched whenever a user starts a virtual console terminal or terminal emulator.
+        A file related to user accounts.;
+        \textbf{Format:} \texttt{<login\_name>:<password>:<UID>:<GID>:<comment\_field>:<home\_dir>:<shell\_program>};
+        UID 0 is always reserved for root.;
+        \texttt{<password>} is \texttt{x}. The real passwords are stored in \texttt{/etc/shadow};
+        UIDs below 500 are reserved for system accounts.;
+        You can perform user management by editing this file, but it's very dangerous because corrupted file will even prevent root from login.
     }
 
     \FileEntry{/bin/sh}
@@ -1119,19 +1182,23 @@
 
     \FileEntry{/etc/profile}
     {
-        Main startup file for the bash shell when acting as a login shell.
+        Main startup file for the bash shell when acting as a login shell.;
+        It's a bad idea to put global variables needed by all users in this file because this file may change when Linux distributions upgrade.
     }
 
     \FileEntry{/etc/profile.d}
     {
         The directory to place application-specific startup files at the login time.;
-        All files under this directory will be sourced by \texttt{/etc/profile}
+        All files under this directory will be sourced by \texttt{/etc/profile};
+        Good place to put global variables needed by all users. Just create a new \texttt{.sh} file and put new variables there.
     }
 
     \FileEntry{\$HOME/.bashrc}
     {
         User-specific startup file to define user-specific environment variables.;
-        \texttt{\$HOME/.profile}, \texttt{\$HOME/.bash\_profile}, \texttt{\$HOME/.bash\_login} are also user-specific startup files, but only some of them will be used. 
+        If a shell is started as a non-login interative shell, it will only check \texttt{.bashrc} file.;
+        \texttt{\$HOME/.profile}, \texttt{\$HOME/.bash\_profile}, \texttt{\$HOME/.bash\_login} are also user-specific startup files, but only some of them will be used.;
+        Best place to store user-specific persistent variables for all types of shell process, except that \texttt{BASH\_ENV} is set and points to somewhere else.
     }
 
 \end{document}
