@@ -760,19 +760,91 @@
 
     \subsection{User Management}
 
-        \CommandEntry{useradd -m <login\_name>}
+        \CommandEntry{sudo useradd -m <login\_name>}
         {
             Create new user and set up home directory (\texttt{-m} option).;
             It uses some default values stored in \texttt{/etc/default/useradd} to create up the user.
         }
 
-        \CommandEntry{useradd -D}
+        \CommandEntry{sudo useradd -D}
         {
             Peek the system default used for \texttt{useradd}.;
             Admin can place template files with the directory specified by \texttt{SKEL} field.
             Add one more parameter can override the system default.
         }
 
+        \CommandEntry{sudo userdel <username>}
+        {
+            Remove a user from the system.;
+            By default, only the information in \texttt{/etc/passwd} is removed.;
+            Add \texttt{-r} to remove user's home directory and mail directory, but this still won't remove other files that belong to the user.
+        }
+
+        \CommandEntry{sudo usermod}
+        {
+            Modify a user's account.;
+            \texttt{-c} change the comment field.;
+            \texttt{-e} change the expiration date.;
+            \texttt{-g} change the default login group.;
+            \texttt{-l} change the login name.;
+            \texttt{-L} lock the account to prevent the user from login.;
+            \texttt{-U} unlock the account.;
+            \texttt{-p} change the password.
+        }
+
+        \CommandEntry{sudo passwd <username>}
+        {
+            Change a user's password.;
+            A missing \texttt{<username>} will instruct the command to use the current user by default.;
+            \texttt{-e} will force the user to change their password on the next login.
+        }
+
+        \CommandEntry{sudo chpasswd < <list.txt>}
+        {
+            Change users' password in bulk.;
+            \texttt{<list.txt>} is a \texttt{<user\_id>:<new\_password>} list separated by newlines.
+        }
+
+        \CommandEntry{sudo chsh -s <path\_to\_new\_shell> <username>}
+        {
+            Change the default login shell for a user.
+        }
+
+        \CommandEntry{sudo chfn <username>}
+        {
+            Change the comment field of a user.;
+            The comment is in the finger format.
+        }
+
+        \CommandEntry{finger <username>}
+        {
+            Display the information about a user on the system.
+        }
+
+        \CommandEntry{chage}
+        {
+            Manage the aging process of a user's password.;
+            \texttt{-d} set the number of days since the password was last changed.;
+            \texttt{-E} set the date the password expires. The format of the date can be either in \texttt{YYYY-MM-DD} or the number of days since Jan 1, 1970.;
+            \texttt{-I} set the number of inactive days to lock the account after the password expires.;
+            \texttt{-m} set the minimum number of days between the password changes.;
+            \texttt{-W} set the number of days before the password expires to give the user a warning.
+        }
+
+    \subsection{Group Management}
+
+        \CommandEntry{groupadd <group\_name>}
+        {
+            Add a new group.
+        }
+
+        \CommandEntry{usermod -G <group\_name> <username>}
+        {
+            Add the user with \texttt{username} to the group with \texttt{group\_name};
+            If the membership of a user who is currently logged in is changed, log out that user and log in again to make the change take effect.;
+            \texttt{-G} won't change a user's default group. \texttt{-g} is designed to change a user's default group.
+        }
+        
         \CommandEntry{id -g <username>}
         {
             Display active group IDs of the specified user.;
@@ -1160,12 +1232,22 @@
 
     \FileEntry{/etc/passwd}
     {
-        A file related to user accounts.;
+        Insecure information about user accounts.;
         \textbf{Format:} \texttt{<login\_name>:<password>:<UID>:<GID>:<comment\_field>:<home\_dir>:<shell\_program>};
         UID 0 is always reserved for root.;
         \texttt{<password>} is \texttt{x}. The real passwords are stored in \texttt{/etc/shadow};
         UIDs below 500 are reserved for system accounts.;
         You can perform user management by editing this file, but it's very dangerous because corrupted file will even prevent root from login.
+    }
+
+    \FileEntry{/etc/group}
+    {
+        Group information.;
+        \textbf{Format:} \texttt{<group\_name>:<group\_password>:<GID>:<users>};
+        \texttt{group\_password} allows a non-group user temporarily get the membership of the group.;
+        GIDs below 500 are reserved for the system.;
+        \texttt{<users>} is a list of users that belong to the group. Some \texttt{<users>} may be empty but it's not the case that the group is empty. If a user specify a group as the default group in \texttt{/etc/passwd} file, then the user won't appear in \texttt{<users>} of that group.;
+        Do not edit this file manually. Use \texttt{usermod} instead.
     }
 
     \FileEntry{/bin/sh}
