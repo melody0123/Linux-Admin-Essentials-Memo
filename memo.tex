@@ -844,6 +844,17 @@
             If the membership of a user who is currently logged in is changed, log out that user and log in again to make the change take effect.;
             \texttt{-G} won't change a user's default group. \texttt{-g} is designed to change a user's default group.
         }
+
+        \CommandEntry{groupmod -n <new\_name> <old\_name>}
+        {
+            Change the group name.;
+            GID and group members will remain intact.
+        }
+
+        \CommandEntry{groupmod -g <new\_id> <group\_name>}
+        {
+            Change the GID of a group.
+        }
         
         \CommandEntry{id -g <username>}
         {
@@ -851,6 +862,55 @@
             If \texttt{<username>} is ignored, user of the current process will be used.;
             Combine with \texttt{-n} option to convert group IDs to group names.;
             Use \texttt{-G} to display all IDs of groups that the user belongs to.
+        }
+
+    \subsection{File Permission}
+
+        \CommandEntry{umask}
+        {
+            Display the default permission assigned to the new file or directory.;
+            The first digit is the sticky bit.;
+            The following 3 digits are the complement of octal mode security settings.;
+            The full permission set for a new file is 666 and for a new directory is 777.
+        }
+
+        \CommandEntry{umask <new\_mask>}
+        {
+            Change the default value of \texttt{umask};
+            \texttt{<new\_mask>} is the new complement of the octal mode security settings.
+        }
+
+        \CommandEntry{chmod <octal> <file>}
+        {
+            Set the permission of \texttt{<file>} to \texttt{<octal>};
+            If \texttt{<file>} is a directory, apply \texttt{-R} will apply the settings to all subdirectories and files.;
+            Wildcards can be used for \texttt{<file>} to match multiple file.;
+            \textbf{Example:} \texttt{chmod 766 myprog} will set the permission of \texttt{myprog} to \texttt{rwxrw-rw-}
+        }
+
+        \CommandEntry{chmod [ugoa][+-=][rwxXstugo] <file>}
+        {
+            \texttt{ugoa} are owner, group, everyone else, and all above, respectively.;
+            \texttt{+-=} means add, remove, and set permissions, respectively.;
+            If \texttt{[ugoa]} is omitted, \texttt{a} will be used as the default value.;
+            \textbf{Example:} \texttt{chmod o+x myprog} will give everyone else execute permission.
+        }
+
+        \CommandEntry{sudo chown <new\_owner> <file>}
+        {
+            Change the owner to \texttt{<new\_owner>} for \texttt{<file>};
+            \texttt{<new\_owner>} can be either a login name or UID.;
+            Can also change the group simultaneously: \texttt{sudo chown <new\_owner>.<new\_group> <file>};
+            A shorthand to change the group simultaneously if the distribution uses an individual group that match the user's login name: \texttt{sudo chown <new\_owner>. <file>};
+            Use \texttt{-R} to apply changes recursively.;
+            Use \texttt{-h} to apply changes to the symbolic links that point to \texttt{<file>};
+            Only admins can change the owner of a file. Everyone can change the default group of a file, provided that they are in the group that the file leaves from and goes into.
+        }
+
+        \CommandEntry{chgrp <new\_group> <file>}
+        {
+            Change the default group of a file.;
+            User must own the file and must in \texttt{<new\_group>}
         }
 
 \section{Networks}
