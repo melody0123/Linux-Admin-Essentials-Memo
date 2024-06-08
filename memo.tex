@@ -101,7 +101,7 @@
         Retrieve help information about \texttt{<topic>} \texttt{<topic>} should be a built-in command.
     }
 
-\section{Navigating the File System}
+\section{Navigating the Filesystem}
      
     \CommandEntry{cd}
     {
@@ -892,6 +892,7 @@
         {
             \texttt{ugoa} are owner, group, everyone else, and all above, respectively.;
             \texttt{+-=} means add, remove, and set permissions, respectively.;
+            \texttt{s} means set UID (\texttt{u+s}) or GID (\texttt{g+s}).;
             If \texttt{[ugoa]} is omitted, \texttt{a} will be used as the default value.;
             \textbf{Example:} \texttt{chmod o+x myprog} will give everyone else execute permission.
         }
@@ -912,6 +913,50 @@
             Change the default group of a file.;
             User must own the file and must in \texttt{<new\_group>}
         }
+
+\section{Manage Filesystem}
+
+    \CommandEntry{sudo fdisk <path\_to\_dev\_file>}
+    {
+        Open a disk device with \texttt{fdisk} for further process.;
+        Usually used to partition the disk.;
+        Can also declare a partition as a part of LVM, which helps to change a physical partition into a physical volume.
+    }
+
+    \CommandEntry{sudo mkfs.ext4 <path\_to\_partition\_file>}
+    {
+        Format a partition with ext4 filesystem.
+    }
+
+    \CommandEntry{sudo fsck <option> <filesystem1> <filesystem2> \dots <filesystemn>}
+    {
+        Check and repair filesystems.;
+        Filesystems in the command can be referenced by device file, mounting point, or UUID.;
+        Filesystems shoule be unmounted before checking.
+    }
+
+    \CommandEntry{sudo pvcreate <path\_to\_partition\_file>}
+    {
+        Change a physical partition into a physical volume.;
+        Before this, use \texttt{fdisk} to declare the partition as a part of the LVM.
+    }
+
+    \CommandEntry{sudo pvdisplay <path\_to\_partition\_file>}
+    {
+        Display the detailed information about the physical volume.
+    }
+
+    \CommandEntry{sudo vgcreate <new\_vol\_group\_name> <path\_to\_phy\_vol\_file>}
+    {
+        Create new volume group.
+    }
+
+    \CommandEntry{sudo vgdisplay <vol\_group\_name>}
+    {
+        Display the detailed information about the logical volume group.
+    }
+
+    
 
 \section{Networks}
 
@@ -1288,6 +1333,12 @@
         \texttt{/sys/class/} groups the devices by classes.;
         \texttt{/sys/class/power\_supply/BAT0} is a symbolic link to a directory which contains information about battery0.;
         \texttt{/sys/class/power\_supply/BAT0/charge\_control\_end\_threshold} control the threshold stopping to charge the battery0. Changing the threshold will immediately affect the battery.
+    }
+
+    \FileEntry{/etc/fstab}
+    {
+        Filesystem table.;
+        Filesystem in the table will be mounted automatically at the boot time.
     }
 
     \FileEntry{/etc/passwd}
