@@ -98,7 +98,7 @@
 
     \CommandEntry{help <topic>}
     {
-        Retrieve help information about \texttt{<topic>} \texttt{<topic>} should be a built-in command.
+        Retrieve help information about \texttt{<topic>}. \texttt{<topic>} should be a built-in command.
     }
 
 \section{Navigating the Filesystem}
@@ -163,12 +163,14 @@
 
     \CommandEntry{cp <src> <dst>}
     {
-        Copy \texttt{<src>} to \texttt{<dst>} Wildcards can be used on \texttt{<src>} to copy multiple files.
+        Copy \texttt{<src>} to \texttt{<dst>};
+        Wildcards can be used on \texttt{<src>} to copy multiple files.
     }
 
     \CommandEntry{cp -i <src> <dst>}
     {
-        Copy \texttt{<src>} to \texttt{<dst>} Inform the user before overwriting.;
+        Copy \texttt{<src>} to \texttt{<dst>};
+        Inform the user before overwriting.;
         \textbf{Highly recommended usage.}
     }
 
@@ -364,6 +366,16 @@
         Reload \texttt{<service>} after modify its configuration files.
     }
 
+    \CommandEntry{sudo systemctl restart <service>}
+    {
+        Restart a service.
+    }
+
+    \CommandEntry{sudo systemctl status <service>}
+    {
+        Display the status of a service.
+    }
+
 \section{Manage Secondary Storage Media}
 
     \CommandEntry{mount}
@@ -388,7 +400,7 @@
 
     \CommandEntry{umount <mount\_dir | dev\_file>}
     {
-        Unmount a mounting media by either the mounting directory or device file name.;
+        Unmount a mounted media by either the mounting directory or device file name.;
         The name of the command is \texttt{umount}, not \texttt{unmount};
         If the media is using by some processes, unmount will fail.
     }
@@ -437,6 +449,11 @@
         Ascending order by default.
     }
 
+    \CommandEntry{sort -c <file>}
+    {
+        Check whether \texttt{<file>} is already sorted.
+    }
+
     \CommandEntry{sort -r <file>}
     {
         Sort in descending order.
@@ -453,15 +470,20 @@
         Months must be in three-character format, such as Jan, Feb and Mar.
     }
 
-    \CommandEntry{sort -t <delimiter> -k <field\_1, field\_2, \dots> <file>}
+    \CommandEntry{sort -t <delimiter> -k <pos> <file>}
     {
         \texttt{-t}: split each line with \texttt{<delimiter>};
-        \texttt{-k}: after spliting, treat \texttt{<field\_1, field\_2, \dots>} as a joint key.
+        \texttt{-k}: after spliting, sort according to \texttt{<pos>}-th column.;
+        \texttt{-k} can appear multiple times to sort a joint key. For example, \\
+        \texttt{sort -t, -k1,1n -k2,2n input.csv} \\
+        The first key starts from column 1 and ends at column 1, and is treated as a numeric key. \\
+        The second key starts from column 2 and ends at column 2, and is treated as a numeric key.
     }
 
     \CommandEntry{cut -d <delimiter> -f <number> <file>}
     {
-        Process \texttt{<file>} line by line. Split each line into fields with the \texttt{<delimiter>} Only preserve the \texttt{<number>}-th (one-based) field to output.
+        Process \texttt{<file>} line by line. Split each line into fields with the \texttt{<delimiter>} Only preserve the \texttt{<number>}-th (one-based) field to output.;
+        In order to preserve multiple lines, treat \texttt{<number>} as a comma-separated list.
     }
 
     \CommandEntry{grep -v <pattern> <file>}
@@ -488,7 +510,8 @@
     {
         Compress files \textbf{in place}.;
         Wildcards can be used in \texttt{<file1> <file2> <file3> \dots <filen>}.;
-        \texttt{<file1> <file2> <file3> \dots <filen>} will be deleted after compression.
+        \texttt{<file1> <file2> <file3> \dots <filen>} will be deleted after compression.;
+        Another compression utility, \texttt{xz}, has a higher compression ratio but similar command syntax as \texttt{gzip}
     }
 
     \CommandEntry{gzip -d <gzip\_archive1> <gzip\_archive2> \dots <gzip\_archiven>}
@@ -559,12 +582,13 @@
 
     \CommandEntry{tar -xvf <archive.tar>}
     {
-        Extract everything from the tar archive.
+        Extract everything from the tar archive.;
+        If the archive is compressed, such as \texttt{tar.gz} and \texttt{tar.xz}, this command also works. \texttt{tar} can automatically identify the format of the file and extract the files.
     }
 
     \CommandEntry{tar -zxvf <archive.tgz>}
     {
-        Extract everything from gzipped tar archive.;
+        Extract everything from a gzipped tar archive.;
         \texttt{<archive.tgz>} can also be \texttt{<archive.tar.gz>}
     }
 
@@ -593,9 +617,10 @@
 
         \CommandEntry{<command>\&}
         {
-            Put the and run the command in background mode.;
+            Put and run the command in background mode.;
             Press Enter key to let the prompt come back.;
-            \texttt{[<\#\_of\_background\_jobs>] <PID>} will be given before the prompt returns.
+            \texttt{[<\#\_of\_background\_jobs>] <PID>} will be given before the prompt returns.;
+            \textbf{No} subshell is spawned.
         }
 
         \CommandEntry{<process\_list>\&}
@@ -763,13 +788,13 @@
         \CommandEntry{sudo useradd -m <login\_name>}
         {
             Create new user and set up home directory (\texttt{-m} option).;
-            It uses some default values stored in \texttt{/etc/default/useradd} to create up the user.
+            It uses some default values stored in \texttt{/etc/default/useradd} to create the new user.
         }
 
         \CommandEntry{sudo useradd -D}
         {
             Peek the system default used for \texttt{useradd}.;
-            Admin can place template files with the directory specified by \texttt{SKEL} field.
+            Admin can place template files within the directory specified by \texttt{SKEL} field.;
             Add one more parameter can override the system default.
         }
 
@@ -777,7 +802,7 @@
         {
             Remove a user from the system.;
             By default, only the information in \texttt{/etc/passwd} is removed.;
-            Add \texttt{-r} to remove user's home directory and mail directory, but this still won't remove other files that belong to the user.
+            Add \texttt{-r} to remove user's home directory and mail directory (\textbf{not recommended}, because files in the home directory may be still in use by other users), but this still won't remove other files that belong to the user.
         }
 
         \CommandEntry{sudo usermod}
@@ -901,17 +926,17 @@
         {
             Change the owner to \texttt{<new\_owner>} for \texttt{<file>};
             \texttt{<new\_owner>} can be either a login name or UID.;
-            Can also change the group simultaneously: \texttt{sudo chown <new\_owner>.<new\_group> <file>};
-            A shorthand to change the group simultaneously if the distribution uses an individual group that match the user's login name: \texttt{sudo chown <new\_owner>. <file>};
+            Can also change the group simultaneously: \texttt{sudo chown <new\_owner>:<new\_group> <file>};
+            A shorthand to change the group simultaneously if the distribution uses an individual group that match the user's login name: \texttt{sudo chown <new\_owner>: <file>};
             Use \texttt{-R} to apply changes recursively.;
-            Use \texttt{-h} to apply changes to the symbolic links that point to \texttt{<file>};
+            \textbf{Note:} If \texttt{<file>} is a symlink, the ownership of the symlink itself won't be changed. Instead, what will be changed is the ownership of its target. In order to change the ownership of a symlink instead of its target, apply \texttt{-h} option.;
             Only admins can change the owner of a file. Everyone can change the default group of a file, provided that they are in the group that the file leaves from and goes into.
         }
 
         \CommandEntry{chgrp <new\_group> <file>}
         {
             Change the default group of a file.;
-            User must own the file and must in \texttt{<new\_group>}
+            User must own the file and must be in \texttt{<new\_group>}
         }
 
 \section{Manage Filesystem}
@@ -926,6 +951,7 @@
     \CommandEntry{sudo mkfs.ext4 <path\_to\_partition\_file>}
     {
         Format a partition with ext4 filesystem.
+        \texttt{<path\_to\_partition\_file>} can be either a physical partition or a logical volume.
     }
 
     \CommandEntry{sudo fsck <option> <filesystem1> <filesystem2> \dots <filesystemn>}
@@ -956,7 +982,49 @@
         Display the detailed information about the logical volume group.
     }
 
-    
+    \CommandEntry{vgchange}
+    {
+        Activate or deactivate a volume group.
+    }
+
+    \CommandEntry{vgremove}
+    {
+        Remove a volume group.
+    }
+
+    \CommandEntry{vgextend}
+    {
+        Add physical volumes to the volume group.
+    }
+
+    \CommandEntry{vgreduce}
+    {
+        Remove physical volumes from the volume group.
+    }
+
+    \CommandEntry{sudo lvcreate -l <percent> -n <lv\_name> <vol\_group\_name>}
+    {
+        Create logic volume.;
+        \texttt{<percent>} is the percent of the free space that will be allocated to the logic volume.;
+        \texttt{-L} allow you to specify the actual size (in KB, MB) that will be allocated to the logic volume.
+    }
+
+    \CommandEntry{vldisplay <vol\_group\_name>}
+    {
+        Display the detailed information about the logic volume.
+    }
+
+    \CommandEntry{lvextend}
+    {
+        Increase the size of a logical volume.
+        \textbf{Note:} filesystems reside in the logic volume must be adjusted manually to fit the change.;
+        Use \texttt{resize2fs} to reformat the filesystem.
+    }
+
+    \CommandEntry{lvreduce}
+    {
+        Reduce the size of a logical volume.
+    }
 
 \section{Networks}
 
