@@ -583,7 +583,8 @@
     \CommandEntry{tar -xvf <archive.tar>}
     {
         Extract everything from the tar archive.;
-        If the archive is compressed, such as \texttt{tar.gz} and \texttt{tar.xz}, this command also works. \texttt{tar} can automatically identify the format of the file and extract the files.
+        If the archive is compressed, such as \texttt{tar.gz} and \texttt{tar.xz}, this command also works. \texttt{tar} can automatically identify the format of the file and extract the files.;
+        In \texttt{tar -Jxvf <archive.tar.bz2>}, \texttt{-J} option is used to filter out \texttt{bz2} compressed file.
     }
 
     \CommandEntry{tar -zxvf <archive.tgz>}
@@ -1040,6 +1041,28 @@
         Cannot tell you whether the package is installed or not.
     }
 
+    \CommandEntry{apt search <keyword>}
+    {
+        Display the packages match the keyword.;
+        Search for the keyword in both package names and descriptions.;
+        Use \CommandEntry{apt --names-only search <keyword>} to restrict the search in package names.
+    }
+
+    \CommandEntry{sudo apt install <package\_name>}
+    {
+        Install a package and its dependencies.
+    }
+
+    \CommandEntry{sudo apt update \&\& sudo apt upgrade}
+    {
+        Update the package repository and then upgrade all upgradable packages safely.;
+        "Safely" means being free from dependency issues.;
+        Unused packages after the upgrade won't be removed.;
+        To remove unused packages, use \texttt{sudo apt full-upgrade} instead.;
+        Upgrade should be performed regularly to get security updates in time.;
+        Upgrade should be performed after a fresh installation to get security updates.
+    }
+
     \CommandEntry{dpkg -L <package\_name>}
     {
         List all files related to the package.
@@ -1048,6 +1071,47 @@
     \CommandEntry{dpkg --search <abs\_path\_to\_file>}
     {
         Find the package that the file belongs to.
+    }
+
+    \CommandEntry{sudo apt remove <package\_name>}
+    {
+        Remove a package with data and configuration files preserved.
+    }
+
+    \CommandEntry{sudo apt autoremove}
+    {
+        Remove used dependencies after removing a package.
+    }
+
+    \CommandEntry{sudo apt purge <package\_name>}
+    {
+        Remove the package with its data and configuration files.
+    }
+
+    \CommandEntry{flatpak list}
+    {
+        List all installed applications.
+    }
+
+    \CommandEntry{flatpak search <app\_id>}
+    {
+        Find an application from flatpak's repository.;
+        Must use the application ID instead of the name when working with the container.
+    }
+
+    \CommandEntry{flatpak install <app\_id>}
+    {
+        Install an application.
+    }
+
+    \CommandEntry{flatpak uninstall <app\_id>}
+    {
+        Remove an application from the container.
+    }
+
+    \CommandEntry{./configure \\ make \\ make install}
+    {
+        Build and install a program from source code.
     }
 
 \section{Networks}
@@ -1484,6 +1548,17 @@
         If a shell is started as a non-login interative shell, it will only check \texttt{.bashrc} file.;
         \texttt{\$HOME/.profile}, \texttt{\$HOME/.bash\_profile}, \texttt{\$HOME/.bash\_login} are also user-specific startup files, but only some of them will be used.;
         Best place to store user-specific persistent variables for all types of shell process, except that \texttt{BASH\_ENV} is set and points to somewhere else.
+    }
+
+    \FileEntry{/etc/apt/sources.list}
+    {
+        \texttt{apt} repository file.;
+        \textbf{Format:} \\
+        \texttt{deb <url> <distro\_name> <pkg\_type\_list>} \\
+        \texttt{deb-src <url> <distro\_name> <pkg\_type\_list>} \\
+        \texttt{deb} indicates the repository contains compiled binaries. \\
+        \texttt{deb-src} indicates the repository contains source codes. \\
+        \texttt{<pkg\_type\_list>} can contain multiple words.
     }
 
 \end{document}
