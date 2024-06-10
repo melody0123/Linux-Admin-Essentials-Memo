@@ -1026,6 +1026,30 @@
         Reduce the size of a logical volume.
     }
 
+\section{Install Softwares}
+
+    \CommandEntry{apt --installed list}
+    {
+        List all installed packages on the machine.;
+        \texttt{apt} is the front end of \texttt{apt-get} and \texttt{apt-cache}
+    }
+
+    \CommandEntry{apt show <package\_name>}
+    {
+        Only show the information about \texttt{package\_name};
+        Cannot tell you whether the package is installed or not.
+    }
+
+    \CommandEntry{dpkg -L <package\_name>}
+    {
+        List all files related to the package.
+    }
+
+    \CommandEntry{dpkg --search <abs\_path\_to\_file>}
+    {
+        Find the package that the file belongs to.
+    }
+
 \section{Networks}
 
     \CommandEntry{ssh-keygen -t <key\_type> -b <key\_length>}
