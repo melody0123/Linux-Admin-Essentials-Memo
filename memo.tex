@@ -1561,4 +1561,78 @@
         \texttt{<pkg\_type\_list>} can contain multiple words.
     }
 
+\section{Command Line Editors}
+    
+    \subsection{Vim}
+
+        \subsubsection{Installation and Invocation}
+
+            On some distributions, \texttt{vim} is installed and has an alias of \texttt{vi}. Use \texttt{alias vi} to check it.
+
+            However, \texttt{vim} may be preinstalled with a minimal version, \texttt{vim-tiny} on some distributions. To check it, use \texttt{which vi} to find the file path. Then use \texttt{ls -l <path>} to inspect the file type. If the file is a symlink, then it's probably a minimal version. Sometimes, the symlinks are chained. In order to peek the final target, use \texttt{reaklink -f <path>}
+
+            Use \texttt{sudo apt install vim} to install the full version. Use \texttt{vim <file>} to open a file. If \texttt{<file>} does not exist or \texttt{<file>} is omitted, \texttt{vim} will first open a new buffer for editing.
+
+        \subsubsection{Modes of Operation}
+
+            \begin{itemize}
+                \item Command Mode (aka Normal Mode)
+                \item Insert Mode
+                \item Ex Mode
+            \end{itemize}
+
+            Press \texttt{i} to enter the insert mode from the command mode.\\
+            Press Esc to enter the command mode from the insert mode. \\
+            Press \texttt{:} to enter the Ex mode.
+
+        \subsubsection{Common Operations}
+
+            \textbf{Navigation} \\
+            \vspace{-1em}
+            \begin{itemize}
+                \item Arrow keys / \texttt{h, j, k, l}: Move one character.
+                \item PageDown (or Ctrl+F), PageUp (or Ctrl+B): Move one page forward, backward.
+                \item \texttt{G}: go to the last line.
+                \item \texttt{gg}: go to the first line.
+                \item \texttt{<\#> G}: go to the \texttt{<\#>}-th line.
+            \end{itemize}
+
+            \textbf{Save and Quit}
+            \begin{itemize}
+                \item \texttt{q}: quit if no changes are made.
+                \item \texttt{q!}: quit an discard all changes made.
+                \item \texttt{w <file>}: save the content to a new file \texttt{<file>}
+                \item \texttt{wq}: save and quit.
+            \end{itemize}
+
+            \textbf{Editing Data}
+            \begin{itemize}
+                \item \texttt{x}: delete the character at the current cursor. \texttt{2x} means delete 2 characters.
+                \item \texttt{dd}: cut the current line. \texttt{2dd} means delete 2 lines.
+                \item \texttt{dw}: cut the current word.
+                \item \texttt{d\$}: cut to the end of the current line from the current cursor.
+                \item \texttt{p}: paste the cut or copied contents to the current cursor position.
+                \item \texttt{yd}: copy the current line.
+                \item \texttt{yw}: copy the current word.
+                \item \texttt{y\$}: copy to the end of the current line from the current cursor.
+                \item \texttt{v}: enter visual mode to select contents. Usually used before using \texttt{y}   
+                \item \texttt{J}: Remove the newline character from the current line (merge two lines).
+                \item \texttt{u}: undo the previous operation.
+                \item \texttt{a}: append data after the cursor (move the cursor one character forward and enter the insert mode).
+                \item \texttt{A}: append data to the end of the current line.
+                \item \texttt{r <char>}: replace the character at the cursor with \texttt{<char>}
+                \item \texttt{R <data>}: replace the contents from the current cursor position with \texttt{<data>}, until Esc is pressed.
+            \end{itemize}
+            \textbf{Note}: Press backspace will only move the cursor one character backward. Press delete will delete the character at the current cursor position.
+
+            \vspace{1em}
+            \textbf{Searching and Replacing}
+            \begin{itemize}
+                \item \texttt{/<pattern>}: search for \texttt{<pattern>}. Press \texttt{n} or \texttt{/}+Enter to find next.
+                \item \texttt{:s/<old>/<new>/g}: replace \texttt{<old>} with \texttt{<new>} in the current line.
+                \item \texttt{:n,ms/<old>/<new>/g}: replace all \texttt{<old>} with \texttt{<new>} from line \texttt{n} to line \texttt{m}
+                \item \texttt{:\%s/<old>/<new>/g}: replace all \texttt{<old>} with \texttt{<new>} in the current file.
+                \item \texttt{:\%s/<old>/<new>/g}: replace all \texttt{<old>} with \texttt{<new>} in the current file with confirmation for each occurence.
+            \end{itemize}
+
 \end{document}
