@@ -1780,4 +1780,14 @@
         \end{itemize}
     }
 
+    \ScriptEntry{Pipe}
+    {
+        \textbf{Format:} \texttt{<command1> | <command2> | \dots | <commandn>};
+        Commands are not run back to back. They are run in the same time.;
+        No intermediate file or buffer are used.;
+        As soon as the previous command produces data, the next commmand gets busy processing on them.;
+        If too many data are produced, use \texttt{more} to paging.;
+        Output redirection can be used together with piping. \\ \texttt{<command1> | <command2> | \dots | <commandn> > <output\_file>}
+    }
+
 \end{document}
