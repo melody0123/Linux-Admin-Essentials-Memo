@@ -1482,12 +1482,12 @@
 
     \EnvVarEntry{PS1}
     {
-        TODO
+        The primary prompt string which is displayed before every command.
     }
 
     \EnvVarEntry{PS2}
     {
-        TODO
+        The secondary prompt string which is displayed when a command needs more input (e.g. multi-line commands).
     }
 
     \EnvVarEntry{RANDOM}
@@ -1763,6 +1763,21 @@
         Using command substitution will invoke a subshell to run the enclosed command. Any variable created in the script won't be accessible to the subshell.
     }
 
+    \ScriptEntry{Output Redirection}
+    {
+        \textbf{Basic Mode:} \texttt{<command> > <output\_file>};
+        If \texttt{<output\_file>} already exists, it will be overwritten.;
+        \textbf{Appending Mode:} \texttt{<command> >> <output\_file>}
+    }
 
+    \ScriptEntry{Input Redirection}
+    {
+        \textbf{Basic Mode:} \texttt{<command> < <input\_file>};
+        \textbf{Inline Mode:} \\ \texttt{<command> << <marker> \\ <stdin\_data> \\ <marker>}
+        \begin{itemize}
+            \item \texttt{<marker>} can be any text string, but must be the same.
+            \item \texttt{<stdin\_data>} will be prompted by \textbf{the secondary prompt}, which is specified by \texttt{\$PS2}
+        \end{itemize}
+    }
 
 \end{document}
