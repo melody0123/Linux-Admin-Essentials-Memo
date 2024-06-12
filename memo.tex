@@ -1369,7 +1369,8 @@
 
     \CommandEntry{date}
     {
-        Display the current time.
+        Display the current time.;
+        \texttt{date +\%y\%m\%d}: output the current time in two-digit year, month, and day format. 
     }
 
     \CommandEntry{who}
@@ -1723,12 +1724,45 @@
         Edit the script.;
         Add execute permission (e.g. \texttt{chmod u+x myscript.sh}).;
         Add the path containing the script to the \texttt{PATH} variable (e.g. \texttt{PATH=\$PATH:.}) or use absolute / relative path (e.g. \texttt{./myscript.sh}) to refer to the script.;
-        Run the script.
+        Run the script.;
+        \textbf{Note:} Running a script by referencing the absolute / relative path will invoke a shell as a subprocess instead of a subshell. A \texttt{bash} subprocess is not necessarily to be a subshell.
     }
 
     \ScriptEntry{Display Special Characters}
     {
         Use back slash (\textbackslash) to escape a special character
     }
+
+    \ScriptEntry{User Variables}
+    {
+        \textbf{Naming Rules}:
+            \begin{itemize}
+                \item any text string up to 20 characters.
+                \item may contain letters, digits, or underscores.
+                \item case sensitive.
+            \end{itemize};
+        \textbf{Referencing:} \texttt{\$<var\_name>};
+        \textbf{Assigning:}
+            \begin{itemize}
+                \item No space may appear between the variable, equal sign, and the value.
+                \item No dollar sign. \texttt{<var\_name>=<value>}
+            \end{itemize};
+        \textbf{Data Type:} String, by default.;
+        \textbf{Life Cycle:} Throughout the life of shell script but are deleted when the shell script completes.
+    }
+
+    \ScriptEntry{Command Substitution}
+    {
+        Assigning the output of a command to a variable.;
+        \textbf{Format:}
+            \begin{itemize}
+                \item \texttt{\`<command>\`}
+                \item \texttt{\$(<command>)}
+            \end{itemize};
+        No space between assignment equal sign and command substitution characters.;
+        Using command substitution will invoke a subshell to run the enclosed command. Any variable created in the script won't be accessible to the subshell.
+    }
+
+
 
 \end{document}
