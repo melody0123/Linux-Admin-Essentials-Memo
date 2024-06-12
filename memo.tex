@@ -43,6 +43,18 @@
 }
 \ExplSyntaxOff
 
+\ExplSyntaxOn
+\NewDocumentCommand{\ScriptEntry}{mm}
+{
+    \textbf{#1}
+    \begin{itemize}
+        \seq_set_split:Nnn \l_tmpa_seq { ; } { #2 } % set semicolon as list item separator
+        \seq_map_inline:Nn \l_tmpa_seq { \item ##1 }
+    \end{itemize}
+    \vspace{1em}
+}
+\ExplSyntaxOff
+
 \begin{document}
 
 \section{Accessibility}
@@ -749,6 +761,12 @@
             Changes can only last until we exit the system or reboot the system.
         }
 
+        \CommandEntry{\$<var\_name>}
+        {
+            Reference to a variable.;
+            \texttt{\$\{<var\_name>\}} also works.
+        }
+
         \CommandEntry{<array\_name>=(<item1> <item2> \dots <itemn>)}
         {
             Variables array definition.
@@ -1349,6 +1367,25 @@
         Ask the shell script to pause for \texttt{<seconds>}
     }
 
+    \CommandEntry{date}
+    {
+        Display the current time.
+    }
+
+    \CommandEntry{who}
+    {
+        Display all logged in users.
+    }
+
+    \CommandEntry{echo <string>}
+    {
+        Display \texttt{<string>} to the screen.;
+        Quotes are not required by default to delineate the \texttt{<string>};
+        However, if \texttt{<string>} contains double quotes, single quotes are required to delineate the \texttt{<string>}, and vice versa.;
+        Use \texttt{-n} to suppress the newline at the end of the \texttt{<string>};
+        Variables can be placed within the double quotes.
+    }
+
 \section{Environment Variables}
 
     \EnvVarEntry{BASH}
@@ -1420,6 +1457,11 @@
     \EnvVarEntry{\$}
     {
         Process ID of the current bash shell process.
+    }
+
+    \EnvVarEntry{USER}
+    {
+        Current user's username.
     }
 
     \EnvVarEntry{HOME}
@@ -1653,5 +1695,40 @@
             \item M-E: Redo.
         \end{itemize}
         \textbf{Note:} M refers to the Meta Key, which usually is Alt or Esc.
+
+\section{Shell Scripting}
+
+    \CommandEntry{command1 ; command2 ; \dots ; commandn}
+    {
+        Chain multiple commands sequentially.;
+        Chain as many commands as desired.;
+        The maximum command-line character count is 255 characters.;
+        This is only needed when you want to put multiple commands into one line.;
+        In a shell script, you can put multiple commands into separate lines.
+    }
+
+    \CommandEntry{\#!<path\_to\_shell>}
+    {
+        Specify the shell used to execute the script.;
+        The first line of shell scripts.;
+    }
+
+    \CommandEntry{\#<comment>}
+    {
+        Comment line of shell scripts.
+    }
+
+    \ScriptEntry{Process of Editing and Running a Shell Script}
+    {
+        Edit the script.;
+        Add execute permission (e.g. \texttt{chmod u+x myscript.sh}).;
+        Add the path containing the script to the \texttt{PATH} variable (e.g. \texttt{PATH=\$PATH:.}) or use absolute / relative path (e.g. \texttt{./myscript.sh}) to refer to the script.;
+        Run the script.
+    }
+
+    \ScriptEntry{Display Special Characters}
+    {
+        Use back slash (\textbackslash) to escape a special character
+    }
 
 \end{document}
