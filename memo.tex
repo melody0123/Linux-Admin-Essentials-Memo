@@ -1790,4 +1790,35 @@
         Output redirection can be used together with piping. \\ \texttt{<command1> | <command2> | \dots | <commandn> > <output\_file>}
     }
 
+    \ScriptEntry{Math Operations: \texttt{expr}}
+    {
+        \textbf{Format:} \texttt{expr <expression>};
+        For expressions like \texttt{<arg1> <op> <arg2>}, spaces are required between arguments and operators.;
+        Many \texttt{<op>} are special characters in Bash, such as \texttt{*}, which need escaping by backslash (\textbackslash).;
+        For detailed information about supported \texttt{<expression>}, use \texttt{man expr};
+        \textbf{Limitation:} cannot perform floating point operations.
+    }
+
+    \ScriptEntry{Math Operations: Brackets}
+    {
+        \textbf{Format:} \texttt{\$[ <operation> ]};
+        Don't need to escape special characters.;
+        Spaces between arguments and operators are not required.
+    }
+
+    \ScriptEntry{Floating Point Math Operations: \texttt{bc}}
+    {
+        Use \texttt{bc} to invoke. Use \texttt{bc -q} to invoke quietly.;
+        Use \texttt{quit} to exit.;
+        Precision is controlled by the built-in variable \texttt{scale}. \texttt{scale=0} by default (i.e. integer mode).;
+        Trimming instead of rounding off.;
+        Support variables, \texttt{<var\_name>=<value>}. Dollar sign is not required for referencing.;
+        Use \texttt{print} to print variables or numbers.;
+        Usually combined with command substitution and piping. \\ 
+        \texttt{var=\$(echo "<operation1>; <operation2>; \dots; <operationn>" | bc)};
+        When many math operations are needed, inline input redirection is the best way to use. \\
+        \texttt{var=\$(bc << EOF \\ <operation1> \\ <operation2> \\ \dots \\ <operationn> \\ EOF \\ )};
+        Variables created in the \texttt{bc} are only valid in the \texttt{bc} and not accessible to the shell script.
+    }
+
 \end{document}
