@@ -1387,6 +1387,13 @@
         Variables can be placed within the double quotes.
     }
 
+    \CommandEntry{exit <exit\_status>}
+    {
+        Specify the exit status of a shell script.;
+        Can be combined with variables, e.g. \texttt{exit \$var1};
+        Be careful, the biggest exit status is 255. If \texttt{<exit\_status> > 255}, \texttt{<exit\_status> \%= 256}
+    }
+
 \section{Environment Variables}
 
     \EnvVarEntry{BASH}
@@ -1819,6 +1826,16 @@
         When many math operations are needed, inline input redirection is the best way to use. \\
         \texttt{var=\$(bc << EOF \\ <operation1> \\ <operation2> \\ \dots \\ <operationn> \\ EOF \\ )};
         Variables created in the \texttt{bc} are only valid in the \texttt{bc} and not accessible to the shell script.
+    }
+
+    \ScriptEntry{Exit Status}
+    {
+        An integer ranging from 0 to 255.;
+        0 means success, and a positive exit status means error, by convention.;
+        No standard convention for error exit status. See EXIT STATUS section of \texttt{man bash} for more information.;
+        Use the variable \texttt{\$?} to check the exit status of the last command.;
+        Shell scripts will return the exit status of the last command by default.;
+        Use \texttt{exit <exit\_status>} to specify the exit status.
     }
 
 \end{document}
