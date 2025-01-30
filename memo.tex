@@ -1336,6 +1336,11 @@
         Add \texttt{file} to the staging area.
     }
 
+    \CommandEntry{git add \$(git ls-files -o --exclude-standard)}
+    {
+        Add all \textbf{untracked} files to the staging area.
+    }
+
     \CommandEntry{git commit -m "<msg>"}
     {
         Commit all work in the staging area to the local repository with commit message \texttt{<msg>};
