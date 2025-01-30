@@ -2,6 +2,7 @@
 
 \usepackage[margin=1in]{geometry} % reduce the margin
 \usepackage{expl3} % for variable length list
+\usepackage{listings} % for code listings
 
 % Disable indentation at the beginning of each paragraph
 \setlength{\parindent}{0pt}
@@ -54,6 +55,13 @@
     \vspace{1em}
 }
 \ExplSyntaxOff
+
+\NewDocumentCommand{\Code}{m}
+{
+    \begin{lstlisting}
+        #1
+    \end{lstlisting}
+}
 
 \begin{document}
 
@@ -159,6 +167,21 @@
     \CommandEntry{ls -i}
     {
         Display \textit{inode} number.
+    }
+
+    \CommandEntry{ls -sh}
+    {
+        Display file's size in human-readable format.
+    }
+
+    \CommandEntry{ls -g}
+    {
+        Only display file's default group in the long listing format.
+    }
+
+    \CommandEntry{ls -o}
+    {
+        Only display file's owner in the long listing format.
     }
 
 \section{Handling Files}
@@ -908,6 +931,11 @@
             Use \texttt{-G} to display all IDs of groups that the user belongs to.
         }
 
+        \CommandEntry{group}
+        {
+            List all names of groups that the user belongs to.
+        }
+
     \subsection{File Permission}
 
         \CommandEntry{umask}
@@ -1370,7 +1398,8 @@
     \CommandEntry{date}
     {
         Display the current time.;
-        \texttt{date +\%y\%m\%d}: output the current time in two-digit year, month, and day format. 
+        \texttt{date +\%y\%m\%d}: output the current time in two-digit year, month, and day format.;
+        \texttt{date -d "<some\_date>" +\%s}: get the epoch time for \texttt{<some\_date>}. \\ e.g. \texttt{date -d "Jan 1, 2022" +\%s}
     }
 
     \CommandEntry{who}
@@ -1836,6 +1865,105 @@
         Use the variable \texttt{\$?} to check the exit status of the last command.;
         Shell scripts will return the exit status of the last command by default.;
         Use \texttt{exit <exit\_status>} to specify the exit status.
+    }
+
+    \ScriptEntry{\texttt{if-then} Statement}
+    {
+        Format: \\
+        \texttt{if <command>} \\
+        \texttt{then} \\
+        \mbox{\texttt{~~~<commands>}} \\
+        \texttt{fi};
+        Alternative format: \\
+        \texttt{if <command>; then} \\
+        \mbox{\texttt{~~~<commands>}} \\
+        \texttt{fi};
+        Rule: if \texttt{<command>} returns 0, \texttt{<commands>} will be executed, otherwise will be skipped.;
+        \texttt{if} can only evaluate the return status of \texttt{<command>}
+    }
+
+    \ScriptEntry{\texttt{if-then-else} Statement}
+    {
+        Format: \\
+        \texttt{if <command>} \\
+        \texttt{then} \\
+        \mbox{\texttt{~~~<commands>}} \\
+        \texttt{else} \\
+        \mbox{\texttt{~~~<commands>}} \\
+        \texttt{fi};
+        Rule: if \texttt{<command>} returns 0, \texttt{then} block will be executed, otherwise \texttt{else} block will be executed.;
+        \texttt{if-then} statement can be nested. If nested in \texttt{else} block, \\
+        \texttt{if <command>} \\
+        \texttt{then} \\
+        \mbox{\texttt{~~~<commands>}} \\
+        \texttt{elif <command>} \\
+        \texttt{then} \\
+        \mbox{\texttt{~~~<commands>}} \\
+        \texttt{elif <command>} \\
+        \texttt{then} \\
+        \mbox{\texttt{~~~<commands>}} \\
+        \texttt{elif <command>} \\
+        \texttt{then} \\
+        \mbox{\texttt{~~~<commands>}} \\
+        \texttt{else} \\
+        \mbox{\texttt{~~~<commands>}} \\
+        \texttt{fi};
+        \texttt{else} block belongs to the \texttt{if} / \texttt{elif} block directly precede it.;
+        \texttt{if} statements are executed in order, only the first one that has a 0 return status will be executed.
+    }
+
+    \ScriptEntry{\texttt{test} Command}
+    {
+        Format: \texttt{test <condition>} or \texttt{[ <condition> ]};
+        For brackets form, you must have a space after the first bracket and a space before the second bracket.;
+        \texttt{[ <condition1> ] \&\& [ <condition2> ]}, \texttt{[ <condition1> ] || [ <condition2> ]}. They are short-circuit.;
+        If \texttt{<condition>} is true, \texttt{test} returns 0, otherwise a non-zero status code will be returned.;
+        If \texttt{<condition>} is empty, it will be evaluated to be false.;
+        Combine with \texttt{if} statement: \\
+        \texttt{if test <condition>} \\
+        \texttt{then} \\
+        \mbox{\texttt{~~~<commands>}} \\
+        \texttt{fi} \\ \\
+        or \\ \\
+        \texttt{if [ <condition> ]} \\
+        \texttt{then} \\
+        \mbox{\texttt{~~~<commands>}} \\
+        \texttt{fi};
+        Usage:
+        \begin{itemize}
+            \item numeric comparison (can only handle integers)
+            \begin{itemize}
+                \item \texttt{<n1> -eq <n2>}: equal 
+                \item \texttt{<n1> -ne <n2>}: not equal 
+                \item \texttt{<n1> -lt <n2>}: less than 
+                \item \texttt{<n1> -gt <n2>}: greater than
+                \item \texttt{<n1> -le <n2>}: less than or equal to
+                \item \texttt{<n1> -ge <n2>}: greater than or equal to
+            \end{itemize}
+            \item string comparison (it's better to enclose strings with quotation marks)
+            \begin{itemize}
+                \item \texttt{<str1> = <str2>}: equal
+                \item \texttt{<str1> != <str2>}: not equal
+                \item \texttt{<str1> < <str2>}: less than ($<$ must be escaped, or will be treated as input redirection. Opposite to \texttt{sort} order)
+                \item \texttt{<str1> > <str2>}: greater than ($>$ must be escaped, or will be treated as output redirection. Opposite to \texttt{sort} order)
+                \item \texttt{-n <str>}: is not empty, equivalent to \texttt{test <str>}. if a variable is never defined, it will be treated as empty. It's a good idea to test any strings before comparing them.
+                \item \texttt{-z <str>}: is empty (zero length)
+            \end{itemize}
+            \item file comparison
+            \begin{itemize}
+                \item \texttt{-e <file>}: exist
+                \item \texttt{-f <file>}: exist and is a file
+                \item \texttt{-d <file>}: exist and is a directory (good thing to do before writing to or jumping to a directory)
+                \item \texttt{-r <file>}: exist and is readable
+                \item \texttt{-w <file>}: exist and is writable
+                \item \texttt{-x <file>}: exist and is executable
+                \item \texttt{-s <file>}: exist and is not empty
+                \item \texttt{-O <file>}: exist and is owned by the current user
+                \item \texttt{-G <file>}: exist and the \textbf{default group} is the same as the current user
+                \item \texttt{<file1> -ot <file2>}: older than (meta-info change time or modification time)
+                \item \texttt{<file1> -nt <file2>}: newer than (meta-info change time or modification time). Both \texttt{-ot} and \texttt{-nt} won't check the existence of the files. \textbf{So it's imperative to check the existence.}
+            \end{itemize}
+        \end{itemize}
     }
 
 \end{document}
