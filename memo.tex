@@ -1393,6 +1393,36 @@
         Retrieve the status of the current branch.
     }
 
+\section{GPG}
+
+    \CommandEntry{gpg --listkeys}
+    {
+        List all imported keys.
+    }
+
+    \CommandEntry{gpg --recv-keys <keyid>}
+    {
+        Import the pubkey whose issuer id is \texttt{<keyid>}
+    }
+
+    \CommandEntry{gpg --delete-keys <keyid>}
+    {
+        Delete the imported pubkey whose issuer id is \texttt{<keyid>} 
+    }
+
+    \CommandEntry{gpg --verify <sigfile> <file>}
+    {
+        Verify the authenticity of \texttt{<file>} with \texttt{<sigfile>}
+    }
+
+    \CommandEntry{gpg --list-packets <param>}
+    {
+        Print summary of \texttt{<param>}, which can be either a key issuer id 
+        or signature file. \\
+        This command is very useful for extracting key issuer ID when only given 
+        a signature file.
+    }
+
 \section{Misc}
 
     \CommandEntry{sleep <seconds>}
