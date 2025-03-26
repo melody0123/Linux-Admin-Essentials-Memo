@@ -476,6 +476,17 @@
         Read means copying data to the main memory from the storage media.
     }
 
+\section{Benchmark}
+
+        \CommandEntry{sysbench memory [options] run}
+        {
+            Run memory benchmark. Common \texttt{options} are \\
+            \texttt{--memory-block-size} \\
+            \texttt{--memory-total-size} \\
+            \texttt{--memory-oper=[ read | write ]} \\
+            \texttt{--memory-access-mode=[ seq | rnd ]}
+        }
+
 \section{Manipulating Data Files}
 
     \CommandEntry{sort <file>}
